@@ -127,7 +127,7 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
         if data["end"]:
             bot.answer_callback_query(
                 query.id,
-                "Match has ended!",
+                "Game Berakhir!",
                 show_alert=True
             )
 
@@ -227,7 +227,7 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
             bot.edit_message_text(
                 query.from_user.id,
                 query.message.message_id,
-                "Feel free to share your thoughts on XO bot with me.",
+                "Feel free to share your thoughts bot with me.",
                 reply_markup=CONTACT_KEYS
             )
 
