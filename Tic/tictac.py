@@ -55,7 +55,7 @@ class ErGame:
                 elif self.board[i][j] == 1:
                     temp.append(
                         InlineKeyboardButton(
-                            emojis.X_loser,
+                            X_loser,
                             json.dumps({
                                 "type": "K",
                                 "coord": (i, j),
@@ -66,7 +66,7 @@ class ErGame:
                 else:
                     temp.append(
                         InlineKeyboardButton(
-                            emojis.O_loser,
+                            O_loser,
                             json.dumps({
                                 "type": "K",
                                 "coord": (i, j),
@@ -97,7 +97,7 @@ class ErGame:
         if player_id == self.player1["id"]:
             self.board[coord[0]][coord[1]] = 1
             self.board_keys[coord[0]][coord[1]] = InlineKeyboardButton(
-                emojis.X,
+                X,
                 json.dumps({
                     "type": "K",
                     "coord": coord,
@@ -107,7 +107,7 @@ class ErGame:
         else:
             self.board[coord[0]][coord[1]] = 2
             self.board_keys[coord[0]][coord[1]] = InlineKeyboardButton(
-                emojis.O,
+                O,
                 json.dumps({
                     "type": "K",
                     "coord": coord,
@@ -165,8 +165,8 @@ class ErGame:
                     elif self.board[i][j] == 1:
                         temp.append(
                             InlineKeyboardButton(
-                                emojis.X if self.player1["id"] == self.winner["id"] and (i, j) in self.winner_keys
-                                else emojis.X_loser,
+                                X if self.player1["id"] == self.winner["id"] and (i, j) in self.winner_keys
+                                else X_loser,
                                 json.dumps({
                                     "type": "K",
                                     "coord": (i, j),
@@ -177,8 +177,8 @@ class ErGame:
                     else:
                         temp.append(
                             InlineKeyboardButton(
-                                emojis.O if self.player2["id"] == self.winner["id"] and (i, j) in self.winner_keys
-                                else emojis.O_loser,
+                                O if self.player2["id"] == self.winner["id"] and (i, j) in self.winner_keys
+                                else O_loser,
                                 json.dumps({
                                     "type": "K",
                                     "coord": (i, j),
