@@ -43,7 +43,7 @@ CONTACT_KEYS = InlineKeyboardMarkup([
 ])
 
 
-@app.on_message(filters.private & filters.text)
+@app.on_message(filters.text)
 def message_handler(bot: Client, message: Message):
     if message.text == "/start":
         bot.send_message(
