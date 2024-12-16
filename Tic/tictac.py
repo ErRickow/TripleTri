@@ -1,5 +1,5 @@
 import json
-import emoji
+import .emoji
 from pyrogram.types import InlineKeyboardButton
 
 
