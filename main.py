@@ -1,6 +1,7 @@
 import os
 
 from Tic.data import *
+import Tic.emoji
 from pyrogram import Client, filters
 from pyrogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessageContent, \
     InlineKeyboardMarkup, CallbackQuery, Message
