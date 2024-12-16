@@ -1,4 +1,4 @@
-from tictac import *
+from .tictac import *
 
 
 games = []
