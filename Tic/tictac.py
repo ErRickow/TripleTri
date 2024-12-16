@@ -1,5 +1,6 @@
 import json
 from Tic.emoji import *
+from Tic.data import update_stats
 from pyrogram.types import InlineKeyboardButton
 
 
@@ -29,6 +30,10 @@ class ErGame:
         ]
 
     def is_draw(self) -> bool:
+        if self.is_draw():
+            update_stats(self.player1["id"], "draw")
+            if self.player2:
+                update_stats(self.player2["id"], "draw")
         for i in range(3):
             for j in range(3):
                 if not self.board[i][j]:
@@ -145,6 +150,12 @@ class ErGame:
 
         if self.winner:
             new_board_keys = []
+            
+            update_stats(self.winner["id"], "win")
+            if self.player1["id"] != self.winner["id"]:
+                update_stats(self.player1["id"], "lose")
+            elif self.player2 and self.player2["id"] != self.winner["id"]:
+                update_stats(self.player2["id"], "lose")
 
             for i in range(3):
 
@@ -203,3 +214,12 @@ class ErGame:
             return True
 
         return False
+        
+
+# Setelah menentukan pemenang
+if self.winner:
+    update_stats(self.winner["id"], "win")
+    if self.player1["id"] != self.winner["id"]:
+        update_stats(self.player1["id"], "lose")
+    elif self.player2 and self.player2["id"] != self.winner["id"]:
+        update_stats(self.player2["id"], "lose")
