@@ -1,5 +1,5 @@
 import json
-from tic.emoji import *
+from Tic.emoji import *
 from pyrogram.types import InlineKeyboardButton
 
 
