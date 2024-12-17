@@ -14,11 +14,14 @@ def save_stats(stats):
         with open("user_stats.json", "w") as file:
             json.dump(stats, file, indent=4)
     except Exception as e:
-        print(e)
+        print(f"Error saving stats: {e}")
 
 # Fungsi untuk memperbarui statistik
 def update_stats(user_id, result):
     stats = load_stats()
+
+    # Print untuk debug - lihat data yang dimuat
+    print(f"Loaded stats: {stats}")
 
     # Inisialisasi statistik jika user belum ada
     if user_id not in stats:
@@ -40,4 +43,9 @@ def update_stats(user_id, result):
     elif result == "draw":
         stats[user_id]["games_draw"] += 1
 
+    # Print untuk debug - lihat data setelah update
+    print(f"Updated stats: {stats}")
+
     save_stats(stats)
+
+# Contoh penggunaan
