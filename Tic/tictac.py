@@ -202,7 +202,7 @@ class ErGame:
 
             new_board_keys.append(
                 [InlineKeyboardButton(
-                    "Play again!",
+                    "Main Lagi!",
                     json.dumps({
                         "type": "R"
                     })
@@ -215,11 +215,3 @@ class ErGame:
 
         return False
         
-
-# Setelah menentukan pemenang
-if self.winner:
-    update_stats(self.winner["id"], "win")
-    if self.player1["id"] != self.winner["id"]:
-        update_stats(self.player1["id"], "lose")
-    elif self.player2 and self.player2["id"] != self.winner["id"]:
-        update_stats(self.player2["id"], "lose")
