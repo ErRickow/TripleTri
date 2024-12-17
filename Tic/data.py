@@ -1,4 +1,4 @@
-from Tic.tictac import *
+from Tic.tictac import ErGame
 import json
 
 games = []
