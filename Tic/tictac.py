@@ -29,21 +29,21 @@ class ErGame:
         ]
 
     def is_draw(self) -> bool:
-        if self.is_draw():
-            update_stats(self.player1["id"], "draw")
-            if self.player2:
-                update_stats(self.player2["id"], "draw")
+        # Periksa apakah papan memiliki sel kosong
         for i in range(3):
             for j in range(3):
-                if not self.board[i][j]:
+                if not self.board[i][j]:  # Jika ada sel kosong, permainan belum seri
                     return False
-
+    
+        # Jika tidak ada sel kosong, artinya permainan seri
+        update_stats(self.player1["id"], "draw")
+        if self.player2:  # Jika ada pemain kedua
+            update_stats(self.player2["id"], "draw")
+    
         new_board_keys = []
-
+    
         for i in range(3):
-
             temp = []
-
             for j in range(3):
                 if self.board[i][j] == 0:
                     temp.append(
@@ -78,9 +78,9 @@ class ErGame:
                             })
                         )
                     )
-
             new_board_keys.append(temp)
-
+    
+        # Tambahkan tombol "Main Lagi!"
         new_board_keys.append(
             [InlineKeyboardButton(
                 "Main Lagi!",
@@ -89,7 +89,7 @@ class ErGame:
                 })
             )]
         )
-
+    
         self.board_keys = new_board_keys
 
         return True
