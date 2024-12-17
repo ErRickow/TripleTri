@@ -81,7 +81,6 @@ def message_handler(bot: Client, message: Message):
         )
     
         bot.send_message(response, reply_markup=CONTACT_KEYS)
-)
 
 
 @app.on_inline_query()
