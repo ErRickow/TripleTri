@@ -1,6 +1,7 @@
 import os
 
 from Tic.data import *
+from Tic.util import load_stats
 from Tic.emoji import *
 from dotenv import load_dotenv
 from pyrogram import Client, filters
