@@ -4,7 +4,7 @@ from Tic.data import *
 from Tic.emoji import *
 from dotenv import load_dotenv
 from pyrogram import Client, filters
-from pyrogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessageContent, \
+from pyrogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessageContent,
     InlineKeyboardMarkup, CallbackQuery, Message
 
 load_dotenv()
@@ -19,6 +19,9 @@ app = Client("er",
 def mention(name: str, id: int) -> str:
     return "[{}](tg://user?id={})".format(name, id)
 
+def get_user_stats(user_id):
+    stats = load_stats()
+    return stats.get(user_id, {"games_played": 0, "games_won": 0, "games_draw": 0})
 
 CONTACT_KEYS = InlineKeyboardMarkup([
     [
@@ -48,12 +51,12 @@ def message_handler(bot: Client, message: Message):
     if message.text == "/start":
         bot.send_message(
             message.from_user.id,
-            f"Hi **{message.from_user.first_name}**\n\nTo begin, start a message "
-            "with @ErGame in any chat you want or click on the **Play** button "
-            "and select a chat to play in.",
+            f"Hi **{message.from_user.first_name}**\n\nUntuk memulai, start terlebih dahulu, "
+            "dengan @TripleTBot di group kamu atau klik Tombol **Bermain** "
+            "dan pilih group mana pun.",
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton(
-                    game + " Play",
+                    game + " Bermain",
                     switch_inline_query=game
                 )]
             ])
@@ -72,9 +75,9 @@ def inline_query_handler(_, query: InlineQuery):
         results=[InlineQueryResultArticle(
             title="Tic-Tac-Toe",
             input_message_content=InputTextMessageContent(
-                f"**{query.from_user.first_name}** challenged you in Game!"
+                f"**{query.from_user.first_name}** menantang untuk bermain!"
             ),
-            description="Tap here to challenge your friends!",
+            description="Pencet Disini Untuk Menantang Temanmu!",
             thumb_url="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Tic_tac_toe.svg/1200px-Tic_tac_toe"
                       ".svg.png",
             reply_markup=InlineKeyboardMarkup(
@@ -140,7 +143,7 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
                 or (not game.whose_turn and query.from_user.id != game.player2["id"]):
             bot.answer_callback_query(
                 query.id,
-                "Not your turn!"
+                "Bukan Giliranmu!"
             )
 
             return
@@ -188,7 +191,7 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
         else:
             bot.answer_callback_query(
                 query.id,
-                "This one is already taken!"
+                "Ini bukan room kamu!"
             )
     elif data["type"] == "R":  # Reset
         game = reset_game(game)
@@ -214,10 +217,10 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
             bot.edit_message_text(
                 query.from_user.id,
                 query.message.message_id,
-                "reza.farjam78@gmail.com",
+                "ryppain@gmail.com",
                 reply_markup=InlineKeyboardMarkup(
                     [[InlineKeyboardButton(
-                        back + " Back",
+                        back + " Kembali",
                         json.dumps(
                             {"type": "C",
                              "action": "email-back"
@@ -234,5 +237,24 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
                 reply_markup=CONTACT_KEYS
             )
 
+@Client.on_message(filters.command("stats"))
+async def show_stats(client, message):
+    user_id = str(message.from_user.id)
+    stats = load_stats()
+    user_stats = stats.get(user_id, {"games_played": 0, "games_won": 0, "games_draw": 0})
+
+    response = (
+        f"📊 **Statistik Anda**:\n\n"
+        f"🎮 Total Permainan: {user_stats['games_played']}\n"
+        f"🏆 Kemenangan: {user_stats['games_won']}\n"
+        f"🤝 Seri: {user_stats['games_draw']}\n"
+    )
+
+    # Tambahkan tombol untuk mulai game baru
+    keyboard = InlineKeyboardMarkup(
+        [[InlineKeyboardButton("Main Lagi!", callback_data="start_new_game")]]
+    )
+
+    await message.reply_text(response, reply_markup=keyboard)
 
 app.run()
