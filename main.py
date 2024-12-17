@@ -81,7 +81,7 @@ def message_handler(bot: Client, message: Message):
             f"🤝 Seri: {user_stats['games_draw']}\n"
         )
     
-        await message.reply_text(response, reply_markup=CONTACT_KEYS)
+        bot.send_message(response, reply_markup=CONTACT_KEYS)
 )
 
 
