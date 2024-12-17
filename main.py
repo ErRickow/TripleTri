@@ -238,7 +238,7 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
                 reply_markup=CONTACT_KEYS
             )
 
-@Client.on_message(filters.command("stats"))
+@app.on_message(filters.command("stats"))
 async def show_stats(client, message):
     user_id = str(message.from_user.id)
     stats = load_stats()
@@ -257,5 +257,7 @@ async def show_stats(client, message):
     )
 
     await message.reply_text(response, reply_markup=keyboard)
+
+    
 
 app.run()
