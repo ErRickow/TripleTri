@@ -47,41 +47,49 @@ CONTACT_KEYS = InlineKeyboardMarkup([
 ])
 
 
-@app.on_message(filters.text)
-def message_handler(bot: Client, message: Message):
-    if message.text == "/start":
-        bot.send_message(
-            message.from_user.id,
-            f"Hi **{message.from_user.first_name}**\n\nUntuk memulai, start terlebih dahulu, "
-            "dengan @TripleTBot di group kamu atau klik Tombol **Bermain** "
-            "dan pilih group mana pun.",
-            reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton(
-                    game + " Bermain",
-                    switch_inline_query=game
-                )]
-            ])
-        )
-    elif message.text == "/contact":
-        bot.send_message(
-            message.from_user.id,
-            "Feel free to share your thoughts on Er bot with me.",
-            reply_markup=CONTACT_KEYS
-        )
-    elif message.text == "/stats":
-        user_id = str(message.from_user.id)
-        stats = load_stats()
-        user_stats = stats.get(user_id, {"games_played": 0, "games_won": 0, "games_draw": 0})
-    
-        response = (
-            f"📊 **Statistik Anda**:\n\n"
-            f"🎮 Total Permainan: {user_stats['games_played']}\n"
-            f"🏆 Kemenangan: {user_stats['games_won']}\n"
-            f"🤝 Seri: {user_stats['games_draw']}\n"
-        )
-    
-        bot.send_message(message.from_user.id, response, reply_markup=CONTACT_KEYS)
+@app.on_message(filters.command("start"))
+def start_handler(bot: Client, message: Message):
+    bot.send_message(
+        message.chat.id,
+        f"Hi **{message.from_user.first_name}**\n\nUntuk memulai, start terlebih dahulu, "
+        "dengan @TripleTBot di group kamu atau klik Tombol **Bermain** "
+        "dan pilih group mana pun.",
+        reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton(
+                "🎮 Bermain",
+                switch_inline_query="Bermain"
+            )]
+        ])
+    )
 
+@app.on_message(filters.command("contact"))
+def contact_handler(bot: Client, message: Message):
+    bot.send_message(
+        message.chat.id,
+        "Feel free to share your thoughts on Telegram with me.",
+        reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton("Hubungi Admin", url="https://t.me/your_username")]
+        ])
+    )
+
+@app.on_message(filters.command("stats"))
+def stats_handler(bot: Client, message: Message):
+    user_id = str(message.from_user.id)
+    stats = load_stats()
+    user_stats = stats.get(user_id, {"games_played": 0, "games_won": 0, "games_draw": 0})
+
+    response = (
+        f"📊 **Statistik Anda**:\n\n"
+        f"🎮 Total Permainan: {user_stats['games_played']}\n"
+        f"🏆 Kemenangan: {user_stats['games_won']}\n"
+        f"🤝 Seri: {user_stats['games_draw']}\n"
+    )
+
+    bot.send_message(
+        message.chat.id,
+        response,
+        reply_markup=CONTACT_KEYS
+    )
 
 @app.on_inline_query()
 def inline_query_handler(_, query: InlineQuery):
