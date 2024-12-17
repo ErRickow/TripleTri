@@ -68,6 +68,21 @@ def message_handler(bot: Client, message: Message):
             "Feel free to share your thoughts on Er bot with me.",
             reply_markup=CONTACT_KEYS
         )
+    and if message.text == "/stats":
+        bot.send_message(message.from_user.id,
+        user_id = str(message.from_user.id)
+        stats = load_stats()
+        user_stats = stats.get(user_id, {"games_played": 0, "games_won": 0, "games_draw": 0})
+    
+        response = (
+            f"📊 **Statistik Anda**:\n\n"
+            f"🎮 Total Permainan: {user_stats['games_played']}\n"
+            f"🏆 Kemenangan: {user_stats['games_won']}\n"
+            f"🤝 Seri: {user_stats['games_draw']}\n"
+        )
+    
+        await message.reply_text(response, reply_markup=CONTACT_KEYS)
+)
 
 
 @app.on_inline_query()
@@ -237,26 +252,6 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
                 "Feel free to share your thoughts bot with me.",
                 reply_markup=CONTACT_KEYS
             )
-
-@app.on_message(filters.command("stats"))
-async def show_stats(client, message):
-    user_id = str(message.from_user.id)
-    stats = load_stats()
-    user_stats = stats.get(user_id, {"games_played": 0, "games_won": 0, "games_draw": 0})
-
-    response = (
-        f"📊 **Statistik Anda**:\n\n"
-        f"🎮 Total Permainan: {user_stats['games_played']}\n"
-        f"🏆 Kemenangan: {user_stats['games_won']}\n"
-        f"🤝 Seri: {user_stats['games_draw']}\n"
-    )
-
-    # Tambahkan tombol untuk mulai game baru
-    keyboard = InlineKeyboardMarkup(
-        [[InlineKeyboardButton("Main Lagi!", callback_data="start_new_game")]]
-    )
-
-    await message.reply_text(response, reply_markup=keyboard)
 
     
 
