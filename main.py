@@ -68,7 +68,7 @@ def message_handler(bot: Client, message: Message):
             "Feel free to share your thoughts on Er bot with me.",
             reply_markup=CONTACT_KEYS
         )
-    and if message.text == "/stats":
+    elif message.text == "/stats":
         bot.send_message(message.from_user.id,
         user_id = str(message.from_user.id)
         stats = load_stats()
