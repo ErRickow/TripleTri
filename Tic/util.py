@@ -10,8 +10,9 @@ def load_stats():
 
 # Fungsi untuk menyimpan statistik pengguna
 def save_stats(stats):
-    with open("user_stats.json", "w") as file:
-        json.dump(stats, file, indent=4)
+    try:
+        with open("user_stats.json", "w") as file:
+            json.dump(stats, file, indent=4)
     except Exception as e:
         print(e)
 
