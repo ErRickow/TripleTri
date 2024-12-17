@@ -80,7 +80,7 @@ def message_handler(bot: Client, message: Message):
             f"🤝 Seri: {user_stats['games_draw']}\n"
         )
     
-        bot.send_message(response, reply_markup=CONTACT_KEYS)
+        bot.send_message(message.from_user.id, response, reply_markup=CONTACT_KEYS)
 
 
 @app.on_inline_query()
