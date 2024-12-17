@@ -4,7 +4,7 @@ from Tic.data import *
 from Tic.emoji import *
 from dotenv import load_dotenv
 from pyrogram import Client, filters
-from pyrogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessageContent,
+from pyrogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessageContent, \
     InlineKeyboardMarkup, CallbackQuery, Message
 
 load_dotenv()
