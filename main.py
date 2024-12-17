@@ -69,7 +69,6 @@ def message_handler(bot: Client, message: Message):
             reply_markup=CONTACT_KEYS
         )
     elif message.text == "/stats":
-        bot.send_message(message.from_user.id,
         user_id = str(message.from_user.id)
         stats = load_stats()
         user_stats = stats.get(user_id, {"games_played": 0, "games_won": 0, "games_draw": 0})
