@@ -1,6 +1,7 @@
 import os
 
 from html import escape
+from re import sub
 from Tic.data import *
 from config import LOGS_GROUP_ID, MUST_JOIN
 from Tic.emoji import *
