@@ -53,7 +53,7 @@ CONTACT_KEYS = InlineKeyboardMarkup([
 def must_join_channel(app: Client, msg: Message):
     brod = dB.get_list_from_var(app.me.id, "BROADCAST")
     if msg.from_user.id not in brod:
-        dB.add_to_var(bot.me.id, "BROADCAST", msg.from_user.id)
+        dB.add_to_var(app.me.id, "BROADCAST", msg.from_user.id)
     elif not MUST_JOIN:
         return
     try:
@@ -74,7 +74,7 @@ def must_join_channel(app: Client, msg: Message):
                     app.send_message(
                         msg.chat.id,
                         f"Silakan bergabung dengan channel kami untuk mendukung pengembang bot ini. Setelah bergabung, kamu dapat melanjutkan penggunaan bot ini dengan mengetik /start kembali",
-                        effect_id=5107584321108051014,
+                        effect_id=5087137729863484424,
                         reply_markup=InlineKeyboardMarkup(
                             [
                                 [
