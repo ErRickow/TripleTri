@@ -7,6 +7,7 @@ from Tic.util import dB
 from Tic.erornya import bajingan
 from dotenv import load_dotenv
 from pyrogram import Client, filters
+from pyrogram.errors import UserNotParticipant, ChatAdminRequired
 from pyrogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessageContent, \
     InlineKeyboardMarkup, CallbackQuery, Message, InlineKeyboardButton
 
@@ -85,7 +86,7 @@ async def must_join_channel(app: Client, msg: Message):
 @app.on_message(filters.command("start"))
 @bajingan
 def start_handler(bot: Client, message: Message):
-    bot.send_message(
+    await bot.send_message(
         message.chat.id,
         f"Hi **{message.from_user.first_name}**\n\nUntuk memulai, start terlebih dahulu, "
         f"dengan {bot.me.mention} di group kamu atau klik Tombol **Bermain** "
