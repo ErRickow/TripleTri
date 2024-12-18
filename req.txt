@@ -1,4 +1,4 @@
-pyrogram==2.0.106
-python-dotenv==1.0.0
-sqlite3==0.9.6
-flask==3.0.0
+git+https://github.com/KurimuzonAkuma/pyrogram
+python-dotenv
+sqlite3
+flask
