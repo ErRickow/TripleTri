@@ -1,4 +1,5 @@
 import json
+import time
 from Tic.emoji import *
 from Tic.util import update_stats
 from pyrogram.types import InlineKeyboardButton
@@ -9,6 +10,7 @@ class ErGame:
         self.game_id = game_id
         self.player1 = player1
         self.player2 = player2
+        self.start_time = time.time()
         self.winner = None
         self.winner_keys = []
         self.whose_turn = True  # True: Player1, False: Player2
