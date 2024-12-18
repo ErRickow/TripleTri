@@ -161,7 +161,7 @@ def inline_query_handler(_, query: InlineQuery):
                     json.dumps(
                         {"type": "P",
                          "id": query.from_user.id,
-                         "name": query.from_user.first_name
+                         "name": query.from_user.id
                          }
                     )
                 )]]
