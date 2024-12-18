@@ -3,6 +3,7 @@ import os
 from Tic.data import *
 from Tic.emoji import *
 from Tic.util import dB
+from Tic.erornya import bajingan
 from dotenv import load_dotenv
 from pyrogram import Client, filters
 from pyrogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessageContent, \
@@ -46,6 +47,7 @@ MUST_JOIN = ["Er_support_group", "Ctbb_Un"]
 LOGS_GROUP_ID = -1002423575637
 
 @app.on_message(filters.incoming , group=-1)
+@bajingan
 async def must_join_channel(app: Client, msg: Message):
     if not MUST_JOIN:
         return
@@ -83,6 +85,7 @@ async def must_join_channel(app: Client, msg: Message):
         
 
 @app.on_message(filters.command("start"))
+@bajingan
 def start_handler(bot: Client, message: Message):
     bot.send_message(
         message.chat.id,
@@ -98,6 +101,7 @@ def start_handler(bot: Client, message: Message):
     )
 
 @app.on_message(filters.command("contact"))
+@bajingan
 def contact_handler(bot: Client, message: Message):
     bot.send_message(
         message.chat.id,
@@ -109,6 +113,7 @@ def contact_handler(bot: Client, message: Message):
     )
 
 @app.on_message(filters.command("stats"))
+@bajingan
 def stats_handler(bot: Client, message: Message):
     user_id = message.from_user.id
     stats = dB.get_user_stats(user_id)
@@ -129,6 +134,7 @@ def stats_handler(bot: Client, message: Message):
     bot.send_message(message.chat.id, response, reply_markup=CONTACT_KEYS)
 
 @app.on_inline_query()
+@bajingan
 def inline_query_handler(_, query: InlineQuery):
     query.answer(
         results=[InlineQueryResultArticle(
@@ -156,6 +162,7 @@ def inline_query_handler(_, query: InlineQuery):
 
 
 @app.on_callback_query()
+@bajingan
 def callback_query_handler(bot: Client, query: CallbackQuery):
     data = json.loads(query.data)
     game = get_game(query.inline_message_id, data)
