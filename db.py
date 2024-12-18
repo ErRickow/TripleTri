@@ -77,6 +77,18 @@ class DatabaseClient:
                 )
             """
             )
+            cursor.execute(
+                """
+                CREATE TABLE IF NOT EXISTS user_stats (
+                    user_id INTEGER PRIMARY KEY,
+                    games_played INTEGER DEFAULT 0,
+                    games_won INTEGER DEFAULT 0,
+                    games_lost INTEGER DEFAULT 0,
+                    games_draw INTEGER DEFAULT 0,
+                    total_play_time INTEGER DEFAULT 0
+                )
+                """
+            )
 
     def _set_permissions(self):
         try:
@@ -366,6 +378,50 @@ class DatabaseClient:
             cursor.execute(
                 "DELETE FROM floods WHERE gw = ? AND user_id = ?", (gw, user_id)
             )
+            
+    # Menyimpan statistik pengguna
+    def save_user_stats(self, user_id, stats):
+        self._check_connection()
+        with self._connection as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                """
+                INSERT OR REPLACE INTO user_stats (user_id, games_played, games_won, games_lost, games_draw, total_play_time)
+                VALUES (?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    user_id,
+                    stats.get("games_played", 0),
+                    stats.get("games_won", 0),
+                    stats.get("games_lost", 0),
+                    stats.get("games_draw", 0),
+                    stats.get("total_play_time", 0),
+                ),
+            )
+    
+    # Mengambil statistik pengguna
+    def get_user_stats(self, user_id):
+        self._check_connection()
+        with self._connection as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM user_stats WHERE user_id = ?", (user_id,))
+            result = cursor.fetchone()
+            if result:
+                return {
+                    "user_id": result[0],
+                    "games_played": result[1],
+                    "games_won": result[2],
+                    "games_lost": result[3],
+                    "games_draw": result[4],
+                    "total_play_time": result[5],
+                }
+            return {
+                "games_played": 0,
+                "games_won": 0,
+                "games_lost": 0,
+                "games_draw": 0,
+                "total_play_time": 0,
+            }
 
 
 dB = DatabaseClient(db_path)
