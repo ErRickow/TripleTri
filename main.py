@@ -439,6 +439,7 @@ def add_sudo(client, message):
             return message.reply(f"❌ Terjadi kesalahan saat mencari pengguna: {error}")
 
     sudoers = dB.get_list_from_var(client.me.id, "sudoers", "userid")
+    sudoers.append(ownr)  # Pastikan pemilik bot juga ada dalam daftar sudoers
     usro = f"[{user.first_name} {user.last_name or ''}](tg://user?id={user.id})"
 
     if user.id in sudoers:
@@ -467,6 +468,7 @@ def del_sudo(client, message):
             return message.reply(f"❌ Terjadi kesalahan saat mencari pengguna: {error}")
 
     sudoers = dB.get_list_from_var(client.me.id, "sudoers", "userid")
+    sudoers.append(ownr)  # Pastikan pemilik bot juga ada dalam daftar sudoers
     usro = f"[{user.first_name} {user.last_name or ''}](tg://user?id={user.id})"
 
     if user.id not in sudoers:
@@ -483,6 +485,7 @@ def del_sudo(client, message):
 def sudo_list(client, message):
     msg = "📋 **Daftar Sudo:**\n\n"
     sudoers = dB.get_list_from_var(client.me.id, "sudoers", "userid")
+    sudoers.append(ownr)  # Pastikan pemilik bot juga ada dalam daftar sudoers
 
     if not sudoers:
         return message.reply("❌ Daftar sudo kosong.")
