@@ -3,7 +3,7 @@ from urllib.parse import quote
 from Tic.data import *
 from config import LOGS_GROUP_ID, MUST_JOIN, ownr, botid
 from Tic.emoji import *
-from Tic.util import dB, SUDOERS
+from Tic.util import dB
 from Tic.erornya import bajingan
 from dotenv import load_dotenv
 from pyrogram import Client, filters
