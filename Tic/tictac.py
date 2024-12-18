@@ -151,11 +151,11 @@ class ErGame:
         if self.winner:
             new_board_keys = []
             
-            update_stats(self.winner["id"], "win")
+            update_stats(self.winner["id"], "win", self.start_time)
             if self.player1["id"] != self.winner["id"]:
-                update_stats(self.player1["id"], "lose")
-            elif self.player2 and self.player2["id"] != self.winner["id"]:
-                update_stats(self.player2["id"], "lose")
+                update_stats(self.player1["id"], "lose", self.start_time)
+            if self.player2 and self.player2["id"] != self.winner["id"]:
+                update_stats(self.player2["id"], "lose", self.start_time)
 
             for i in range(3):
 
