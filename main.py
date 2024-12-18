@@ -1,7 +1,7 @@
 import os
 from urllib.parse import quote
 from Tic.data import *
-from config import LOGS_GROUP_ID, MUST_JOIN
+from config import LOGS_GROUP_ID, MUST_JOIN, ownr, SUDOERS
 from Tic.emoji import *
 from Tic.util import dB
 from Tic.erornya import bajingan
@@ -422,6 +422,80 @@ async def broadcast_message(client, message):
         except:
             pass
     IS_BROADCASTING = False
+    
+@app.on_message(filters.command("addsudo") & filters.user(ownr))
+def add_sudo(client, message):
+    if message.reply_to_message:
+        user_id = message.reply_to_message.from_user.id
+        user = message.reply_to_message.from_user
+    else:
+        user_id = message.command[1] if len(message.command) > 1 else None
+        if not user_id or not user_id.isdigit():
+            return message.reply("❌ Harap reply ke pengguna atau berikan ID pengguna yang valid.")
+
+        try:
+            user = client.get_users(int(user_id))
+        except Exception as error:
+            return message.reply(f"❌ Terjadi kesalahan saat mencari pengguna: {error}")
+
+    sudoers = dB.get_list_from_var(client.me.id, "sudoers", "userid")
+    usro = f"[{user.first_name} {user.last_name or ''}](tg://user?id={user.id})"
+
+    if user.id in sudoers:
+        return message.reply(f"✅ {usro} sudah ada dalam daftar sudo.")
+
+    try:
+        dB.add_to_var(client.me.id, "sudoers", user.id, "userid")
+        return message.reply(f"✅ Berhasil menambahkan {usro} ke daftar sudo.")
+    except Exception as error:
+        return message.reply(f"❌ Terjadi kesalahan: {error}")
+
+
+@app.on_message(filters.command("delsudo") & filters.user(ownr))
+def del_sudo(client, message):
+    if message.reply_to_message:
+        user_id = message.reply_to_message.from_user.id
+        user = message.reply_to_message.from_user
+    else:
+        user_id = message.command[1] if len(message.command) > 1 else None
+        if not user_id or not user_id.isdigit():
+            return message.reply("❌ Harap reply ke pengguna atau berikan ID pengguna yang valid.")
+
+        try:
+            user = client.get_users(int(user_id))
+        except Exception as error:
+            return message.reply(f"❌ Terjadi kesalahan saat mencari pengguna: {error}")
+
+    sudoers = dB.get_list_from_var(client.me.id, "sudoers", "userid")
+    usro = f"[{user.first_name} {user.last_name or ''}](tg://user?id={user.id})"
+
+    if user.id not in sudoers:
+        return message.reply(f"✅ {usro} tidak ditemukan dalam daftar sudo.")
+
+    try:
+        dB.remove_from_var(client.me.id, "sudoers", user.id, "userid")
+        return message.reply(f"✅ Berhasil menghapus {usro} dari daftar sudo.")
+    except Exception as error:
+        return message.reply(f"❌ Terjadi kesalahan: {error}")
+
+
+@app.on_message(filters.command("sudolist") & filters.user(ownr))
+def sudo_list(client, message):
+    msg = "📋 **Daftar Sudo:**\n\n"
+    sudoers = dB.get_list_from_var(client.me.id, "sudoers", "userid")
+
+    if not sudoers:
+        return message.reply("❌ Daftar sudo kosong.")
+
+    for user_id in sudoers:
+        try:
+            user = client.get_users(int(user_id))
+            user_name = user.mention if user.mention else user.first_name
+            msg += f"• {user_name}\n"
+        except Exception:
+            msg += f"• ID: {user_id}\n"
+
+    return message.reply(msg)
 
 if __name__ == "__main__":
     print("im on now")
