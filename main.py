@@ -68,6 +68,7 @@ def must_join_channel(app: Client, msg: Message):
                     app.send_message(
                         msg.chat.id,
                         f"Untuk menggunakan bot ini, kamu harus bergabung dulu ke channel kami [di sini]({link}). Setelah bergabung, silakan ketik /start kembali.",
+                        effect_id=5107584321108051014,
                         reply_markup=InlineKeyboardMarkup(
                             [
                                 [
