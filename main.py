@@ -19,6 +19,7 @@ app = Client("er",
              bot_token=os.environ.get("BOT_TOKEN")
              )
 
+IS_BROADCASTING = False
 
 def mention(name: str, id: int) -> str:
     try:
@@ -89,7 +90,7 @@ def must_join_channel(app: Client, msg: Message):
 @app.on_message(filters.command("start") & filters.private)
 @bajingan
 def start_handler(bot: Client, message: Message):
-    brod = dB.get_list_from_var(bot_id, "BROADCAST")
+    brod = dB.get_list_from_var(app.me.id, "BROADCAST")
     if message.from_user.id not in brod:
         dB.add_to_var(client.me.id, "BROADCAST", message.from_user.id)
     bot.send_message(
@@ -108,7 +109,7 @@ def start_handler(bot: Client, message: Message):
 @app.on_message(filters.command("contact") & filters.private)
 @bajingan
 def contact_handler(bot: Client, message: Message):
-    brod = dB.get_list_from_var(bot_id, "BROADCAST")
+    brod = dB.get_list_from_var(app.me.id, "BROADCAST")
     if message.from_user.id not in brod:
         dB.add_to_var(client.me.id, "BROADCAST", message.from_user.id)
     bot.send_message(
@@ -384,7 +385,7 @@ async def broadcast_message(client, message):
     # Bot broadcasting to users
     if options["-user"]:
         sent_users = 0
-        users = [int(user["user_id"]) for user in dB.get_list_from_var(bot_id, "BROADCAST") or []]
+        users = [int(user["user_id"]) for user in dB.get_list_from_var(app.me.id, "BROADCAST") or []]
 
         for user_id in users:
             try:
