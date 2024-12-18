@@ -22,21 +22,21 @@ app = Client("er",
              )
 
 
-async def escape_markdown(text: str) -> str:
-    """Escape markdown data."""
-    escape_chars = r"\*_`\["
-    return sub(r"([%s])" % escape_chars, r"\\\1", text)
+# async def escape_markdown(text: str) -> str:
+#     """Escape markdown data."""
+#     escape_chars = r"\*_`\["
+#     return sub(r"([%s])" % escape_chars, r"\\\1", text)
 
 
-async def mention_html(name: str, user_id: int) -> str:
+async def mention(name: str, user_id: int) -> str:
     """Mention user in html format."""
     name = escape(name)
     return f'<a href="tg://user?id={user_id}">{name}</a>'
 
 
-async def mention(name: str, user_id: int) -> str:
-    """Mention user in markdown format."""
-    return f"[{(await escape_markdown(name))}](tg://user?id={user_id})"
+# async def mention(name: str, user_id: int) -> str:
+#     """Mention user in markdown format."""
+#     return f"[{(await escape_markdown(name))}](tg://user?id={user_id})"
 
 
 CONTACT_KEYS = InlineKeyboardMarkup([
