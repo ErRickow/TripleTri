@@ -7,7 +7,7 @@ def bajingan(func):
     @wraps(func)
     async def wrapper(client, message, *args, **kwargs):
         try:
-            return await func(client, message, *args, **kwargs)
+            return func(client, message, *args, **kwargs)
         except Exception as err:
             # Tangkap error dan kirim ke grup log
             error_message = (
