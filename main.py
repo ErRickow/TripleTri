@@ -147,7 +147,7 @@ def inline_query_handler(_, query: InlineQuery):
                       ".svg.png",
             reply_markup=InlineKeyboardMarkup(
                 [[InlineKeyboardButton(
-                    emojis.swords + " Accept",
+                    swords + " Accept",
                     json.dumps(
                         {"type": "P",
                          "id": query.from_user.id,
@@ -180,13 +180,13 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
 
             message_text = "{}({})  {}  {}({})\n\n{} **{} ({})**".format(
                 mention(game.player1["name"], game.player1["id"]),
-                emojis.X,
-                emojis.vs,
+                X,
+                vs,
                 mention(game.player2["name"], game.player2["id"]),
-                emojis.O,
-                emojis.game,
+                O,
+                game,
                 mention(game.player1["name"], game.player1["id"]),
-                emojis.X
+                X
             )
 
             bot.edit_inline_text(
@@ -219,33 +219,33 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
             if game.check_winner():
                 message_text = "{}({})  {}  {}({})\n\n{} **{} won!**".format(
                     mention(game.player1["name"], game.player1["id"]),
-                    emojis.X,
-                    emojis.vs,
+                    X,
+                    vs,
                     mention(game.player2["name"], game.player2["id"]),
-                    emojis.O,
-                    emojis.trophy,
+                    O,
+                    trophy,
                     mention(game.winner["name"], game.winner["id"])
                 )
             elif game.is_draw():
                 message_text = "{}({})  {}  {}({})\n\n{} **Draw!**".format(
                     mention(game.player1["name"], game.player1["id"]),
-                    emojis.X,
-                    emojis.vs,
+                    X,
+                    vs,
                     mention(game.player2["name"], game.player2["id"]),
-                    emojis.O,
-                    emojis.draw
+                    O,
+                    draw
                 )
             else:
                 message_text = "{}({})  {}  {}({})\n\n{} **{} ({})**".format(
                     mention(game.player1["name"], game.player1["id"]),
-                    emojis.X,
-                    emojis.vs,
+                    X,
+                    vs,
                     mention(game.player2["name"], game.player2["id"]),
-                    emojis.O,
-                    emojis.game,
+                    O,
+                    game,
                     mention(game.player1["name"], game.player1["id"]) if game.whose_turn else
                     mention(game.player2["name"], game.player2["id"]),
-                    emojis.X if game.whose_turn else emojis.O
+                    X if game.whose_turn else O
                 )
 
             bot.edit_inline_text(
@@ -263,13 +263,13 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
 
         message_text = "{}({})  {}  {}({})\n\n{} **{} ({})**".format(
             mention(game.player1["name"], game.player1["id"]),
-            emojis.X,
-            emojis.vs,
+            X,
+            vs,
             mention(game.player2["name"], game.player2["id"]),
-            emojis.O,
-            emojis.game,
+            O,
+            game,
             mention(game.player1["name"], game.player1["id"]),
-            emojis.X
+            X
         )
 
         bot.edit_inline_text(
@@ -285,7 +285,7 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
                 "reza.farjam78@gmail.com",
                 reply_markup=InlineKeyboardMarkup(
                     [[InlineKeyboardButton(
-                        emojis.back + " Back",
+                        back + " Back",
                         json.dumps(
                             {"type": "C",
                              "action": "email-back"
