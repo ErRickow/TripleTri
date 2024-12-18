@@ -1,5 +1,5 @@
 import os
-import re
+import unicodedata
 from Tic.data import *
 from config import LOGS_GROUP_ID, MUST_JOIN
 from Tic.emoji import *
@@ -137,7 +137,7 @@ def stats_handler(bot: Client, message: Message):
 
 @app.on_inline_query()
 def inline_query_handler(_, query: InlineQuery):
-    namanya = re.sub(r'[^a-zA-Z0-9\s]', '', query.from_user.first_name)
+    namanya = unicodedata.normalize('NFC', query.from_user.first_name)
     query.answer(
         results=[InlineQueryResultArticle(
             title="Tic-Tac-Toe",
