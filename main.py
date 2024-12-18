@@ -276,12 +276,7 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
                 "ryppain@gmail.com",
                 reply_markup=InlineKeyboardMarkup(
                     [[InlineKeyboardButton(
-                        back + " Kembali",
-                        json.dumps(
-                            {"type": "C",
-                             "action": "email-back"
-                             }
-                        )
+                        back + " Kembali"
                     )]]
                 )
             )
