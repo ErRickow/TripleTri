@@ -330,7 +330,7 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
                 reply_markup=CONTACT_KEYS
             )
 
-@app.on_message(filters.command("bro") & filters.user(SUDOERS))
+@app.on_message(filters.command("bro") & filters.user(sudoers))
 async def broadcast_message(client, message):
     global IS_BROADCASTING
     if message.reply_to_message:
