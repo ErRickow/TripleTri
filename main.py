@@ -122,7 +122,7 @@ def contact_handler(bot: Client, message: Message):
         ])
     )
 
-@app.on_message(filters.command("stats") filters.group)
+@app.on_message(filters.command("stats") & filters.group)
 @bajingan
 def stats_handler(bot: Client, message: Message):
     user_id = message.from_user.id
