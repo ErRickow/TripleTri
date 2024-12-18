@@ -21,9 +21,6 @@ app = Client("er",
 
 IS_BROADCASTING = False
 
-sudoers = dB.get_list_from_var(botid, "sudoers", "userid")
-sudoers.append(ownr)
-
 def mention(name: str, id: int) -> str:
     try:
         return "[{}](tg://user?id={})".format(name, id)
@@ -330,10 +327,14 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
                 reply_markup=CONTACT_KEYS
             )
 
-@app.on_message(filters.command("bro") & filters.user(sudoers))
+@app.on_message(filters.command("bro"))
 async def broadcast_message(client, message):
     global IS_BROADCASTING
-    if message.reply_to_message:
+    sudoers = dB.get_list_from_var(client.me.id, "sudoers", "userid")
+    sudoers.append(ownr)
+    if message.from_user.id not in sudoers:
+        return message.reply("❌ Kamu bukan pengguna sudo.")
+    elif message.reply_to_message:
         x = message.reply_to_message.id
         y = message.chat.id
     else:
