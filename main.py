@@ -21,6 +21,9 @@ app = Client("er",
 
 IS_BROADCASTING = False
 
+sudoers = dB.get_list_from_var(client.me.id, "sudoers", "userid")
+sudoers.append(ownr)
+
 def mention(name: str, id: int) -> str:
     try:
         return "[{}](tg://user?id={})".format(name, id)
