@@ -149,11 +149,11 @@ def inline_query_handler(_, query: InlineQuery):
                       ".svg.png",
             reply_markup=InlineKeyboardMarkup(
                 [[InlineKeyboardButton(
-                    swords + " Accept",
+                    swords + " Terima",
                     json.dumps(
                         {"type": "P",
                          "id": query.from_user.id,
-                         "name": query.from_user.id
+                         "name": query.from_user.first_name
                          }
                     )
                 )]]
