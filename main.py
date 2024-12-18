@@ -328,6 +328,7 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
             )
 
 @app.on_message(filters.command("bro"))
+@bajingan
 async def broadcast_message(client, message):
     global IS_BROADCASTING
     sudoers = dB.get_list_from_var(client.me.id, "sudoers", "userid")
@@ -362,7 +363,7 @@ async def broadcast_message(client, message):
         schats = dB.get_served_chats()  # Mengambil semua served chats dari database
         chats = [int(chat["chat_id"]) for chat in schats]
         for i in chats:
-            if i == config.LOG_GROUP_ID:
+            if i == LOGS_GROUP_ID:
                 continue
             try:
                 m = (
