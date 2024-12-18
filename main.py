@@ -323,6 +323,81 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
                 reply_markup=CONTACT_KEYS
             )
 
+@app.on_message(filters.command("bro") filters.user(1448273246))
+async def broadcast_message(client, message):
+    global IS_BROADCASTING
+    if IS_BROADCASTING:
+        return await message.reply_text("Broadcast sudah berjalan, tunggu selesai.")
+
+    IS_BROADCASTING = True
+    query = None
+    x, y = None, None
+
+    if message.reply_to_message:
+        x = message.reply_to_message.id
+        y = message.chat.id
+    else:
+        if len(message.command) < 2:
+            IS_BROADCASTING = False
+            return await message.reply_text("Mohon sertakan pesan atau balas ke pesan untuk broadcast.")
+        query = message.text.split(None, 1)[1]
+
+    flags = ["-pin", "-nobot", "-pinloud", "-user"]
+    options = {flag: flag in query for flag in flags}
+    query = query
+    for flag in flags:
+        query = query.replace(flag, "").strip()
+
+    # Bot broadcast inside chats
+    if not options["-nobot"]:
+        sent, pin = 0, 0
+        chats = [int(chat["chat_id"]) for chat in dB.get_served_chats() or []]
+
+        for chat_id in chats:
+            if chat_id == config.LOGS_GROUP_ID:
+                continue
+            try:
+                msg = (
+                    await app.forward_messages(chat_id, y, x)
+                    if x and y
+                    else await app.send_message(chat_id, text=query)
+                )
+                if options["-pin"]:
+                    try:
+                        await msg.pin(disable_notification=True)
+                        pin += 1
+                    except Exception:
+                        continue
+                elif options["-pinloud"]:
+                    try:
+                        await msg.pin(disable_notification=False)
+                        pin += 1
+                    except Exception:
+                        continue
+                sent += 1
+            except FloodWait as e:
+                await asyncio.sleep(e.value)
+            except Exception:
+                continue
+        await message.reply_text(f"Broadcast selesai: {sent} pesan terkirim, {pin} pesan di-pin.")
+
+    # Bot broadcasting to users
+    if options["-user"]:
+        sent_users = 0
+        users = [int(user["user_id"]) for user in dB.get_list_from_var(bot_id, "BROADCAST") or []]
+
+        for user_id in users:
+            try:
+                await app.send_message(user_id, query)
+                sent_users += 1
+            except FloodWait as e:
+                await asyncio.sleep(e.value)
+            except Exception:
+                continue
+        await message.reply_text(f"Broadcast selesai untuk {sent_users} pengguna.")
+
+    IS_BROADCASTING = False
+
 if __name__ == "__main__":
     print("im on now")
     app.run()
