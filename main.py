@@ -84,37 +84,18 @@ def must_join_channel(app: Client, msg: Message):
 
 @app.on_message(filters.command("start"))
 def start_handler(bot: Client, message: Message):
-    effect_id = "5046509860389126442"  # Contoh nilai effect_id
-    
-    if message.chat.type == "private":  # Cek jika chat bersifat private
-        reply_markup = InlineKeyboardMarkup([
-            [InlineKeyboardButton(
-                "🎮 Bermain",
-                switch_inline_query_current_chat=f"{effect_id} Bermain"
-            )]
-        ])
-        text = (
-            f"Hi **{message.from_user.first_name}**\n\n"
-            "Gunakan tombol **Bermain** untuk memulai di chat pribadi ini."
-        )
-    else:  # Untuk group atau supergroup
-        reply_markup = InlineKeyboardMarkup([
+    bot.send_message(
+        message.chat.id,
+        f"Hi **{message.from_user.first_name}**\n\nUntuk memulai, start terlebih dahulu, "
+        f"dengan {bot.me.mention} di group kamu atau klik Tombol **Bermain** "
+        "dan pilih group mana pun.",
+        effect_id="5046509860389126442",
+        reply_markup=InlineKeyboardMarkup([
             [InlineKeyboardButton(
                 "🎮 Bermain",
                 switch_inline_query="Bermain"
             )]
         ])
-        text = (
-            f"Hi **{message.from_user.first_name}**\n\n"
-            f"Untuk memulai, start terlebih dahulu dengan {bot.me.mention} di grup kamu "
-            "atau klik tombol **Bermain** dan pilih grup mana pun."
-        )
-    
-    bot.send_message(
-        message.chat.id,
-        text,
-        effect_id=effect_id,
-        reply_markup=reply_markup
     )
 
 @app.on_message(filters.command("contact"))
