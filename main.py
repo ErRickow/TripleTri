@@ -131,7 +131,6 @@ def stats_handler(bot: Client, message: Message):
     bot.send_message(message.chat.id, response, reply_markup=CONTACT_KEYS)
 
 @app.on_inline_query()
-@bajingan
 def inline_query_handler(_, query: InlineQuery):
     query.answer(
         results=[InlineQueryResultArticle(
@@ -159,7 +158,6 @@ def inline_query_handler(_, query: InlineQuery):
 
 
 @app.on_callback_query()
-@bajingan
 def callback_query_handler(bot: Client, query: CallbackQuery):
     data = json.loads(query.data)
     game = get_game(query.inline_message_id, data)
