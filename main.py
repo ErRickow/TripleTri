@@ -189,13 +189,13 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
                             }
 
             message_text = "{}({})  {}  {}({})\n\n{} **{} ({})**".format(
-                mention(game.player1["name"], game.player1["id"]),
+                mention2(game.player1["name"], game.player1["id"]),
                 X,
                 vs,
                 mention(game.player2["name"], game.player2["id"]),
                 O,
                 game,
-                mention(game.player1["name"], game.player1["id"]),
+                mention2(game.player1["name"], game.player1["id"]),
                 X
             )
 
