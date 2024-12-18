@@ -388,7 +388,7 @@ async def broadcast_message(client, message):
     # Bot broadcasting to users
     if options["-user"]:
         sent_users = 0
-        users = [int(user["user_id"]) for user in dB.get_list_from_var(app.me.id, "BROADCAST") or []]
+        users = dB.get_list_from_var(app.me.id, "BROADCAST") or []
 
         for user_id in users:
             try:
