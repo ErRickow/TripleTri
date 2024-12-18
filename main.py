@@ -37,7 +37,10 @@ CONTACT_KEYS = InlineKeyboardMarkup([
     [
         InlineKeyboardButton(
             mail + " Email",
-            callback_data="C_mail"
+            json.dumps({
+                "type": "C",
+                "action": "email"
+            })
         )
     ]
 ])
@@ -92,7 +95,7 @@ def start_handler(bot: Client, message: Message):
         reply_markup=InlineKeyboardMarkup([
             [InlineKeyboardButton(
                 "🎮 Bermain",
-                switch_inline_query=" play"
+                switch_inline_query=" Main"
             )]
         ])
     )
@@ -144,7 +147,12 @@ def inline_query_handler(_, query: InlineQuery):
             reply_markup=InlineKeyboardMarkup(
                 [[InlineKeyboardButton(
                     swords + " Accept",
-                    callback_data=f"P_{query.from_user.id}"  # Encode data minimal
+                    json.dumps(
+                        {"type": "P",
+                         "id": query.from_user.id,
+                         "name": query.from_user.first_name
+                         }
+                    )
                 )]]
             )
         )],
@@ -156,9 +164,7 @@ def inline_query_handler(_, query: InlineQuery):
 def callback_query_handler(bot: Client, query: CallbackQuery):
     data = json.loads(query.data)
     game = get_game(query.inline_message_id, data)
-    if data.startswith("P_"):
-        player_id = int(data.split("_")[1])
-    # Lanjutkan proses...
+    if data["type"] == "P":  # Player
         if game.player1["id"] == query.from_user.id:
             bot.answer_callback_query(
                 query.id,
