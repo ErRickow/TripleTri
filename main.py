@@ -95,7 +95,7 @@ def start_handler(bot: Client, message: Message):
         reply_markup=InlineKeyboardMarkup([
             [InlineKeyboardButton(
                 "🎮 Bermain",
-                switch_inline_query=" main"
+                switch_inline_query=" play"
             )]
         ])
     )
