@@ -324,7 +324,7 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
                 reply_markup=CONTACT_KEYS
             )
 
-@app.on_message(filters.command("bro") filters.user(1448273246))
+@app.on_message(filters.command("bro") & filters.user(1448273246))
 async def broadcast_message(client, message):
     global IS_BROADCASTING
     if IS_BROADCASTING:
