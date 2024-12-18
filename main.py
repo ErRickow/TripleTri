@@ -133,20 +133,21 @@ def stats_handler(bot: Client, message: Message):
 
     bot.send_message(message.chat.id, response, reply_markup=CONTACT_KEYS)
 
+
 @app.on_inline_query()
 def inline_query_handler(_, query: InlineQuery):
     query.answer(
         results=[InlineQueryResultArticle(
             title="Tic-Tac-Toe",
             input_message_content=InputTextMessageContent(
-                f"**{query.from_user.first_name}** menantang untuk bermain!"
+                f"**{query.from_user.first_name}** Menantang Kamu!"
             ),
-            description="Pencet Disini Untuk Menantang Temanmu!",
+            description="Tap here to challenge your friends in XO!",
             thumb_url="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Tic_tac_toe.svg/1200px-Tic_tac_toe"
                       ".svg.png",
             reply_markup=InlineKeyboardMarkup(
                 [[InlineKeyboardButton(
-                    swords + " Accept",
+                    emojis.swords + " Accept",
                     json.dumps(
                         {"type": "P",
                          "id": query.from_user.id,
@@ -168,7 +169,7 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
         if game.player1["id"] == query.from_user.id:
             bot.answer_callback_query(
                 query.id,
-                "Tunggu Sebentar!",
+                "Wait for opponent!",
                 show_alert=True
             )
         elif game.player1["id"] != query.from_user.id:
@@ -179,13 +180,13 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
 
             message_text = "{}({})  {}  {}({})\n\n{} **{} ({})**".format(
                 mention(game.player1["name"], game.player1["id"]),
-                X,
-                vs,
+                emojis.X,
+                emojis.vs,
                 mention(game.player2["name"], game.player2["id"]),
-                O,
-                game,
+                emojis.O,
+                emojis.game,
                 mention(game.player1["name"], game.player1["id"]),
-                X
+                emojis.X
             )
 
             bot.edit_inline_text(
@@ -197,7 +198,7 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
         if data["end"]:
             bot.answer_callback_query(
                 query.id,
-                "Game Berakhir!",
+                "Match has ended!",
                 show_alert=True
             )
 
@@ -207,7 +208,7 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
                 or (not game.whose_turn and query.from_user.id != game.player2["id"]):
             bot.answer_callback_query(
                 query.id,
-                "Bukan Giliranmu!"
+                "Not your turn!"
             )
 
             return
@@ -218,33 +219,33 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
             if game.check_winner():
                 message_text = "{}({})  {}  {}({})\n\n{} **{} won!**".format(
                     mention(game.player1["name"], game.player1["id"]),
-                    X,
-                    vs,
+                    emojis.X,
+                    emojis.vs,
                     mention(game.player2["name"], game.player2["id"]),
-                    O,
-                    trophy,
+                    emojis.O,
+                    emojis.trophy,
                     mention(game.winner["name"], game.winner["id"])
                 )
             elif game.is_draw():
                 message_text = "{}({})  {}  {}({})\n\n{} **Draw!**".format(
                     mention(game.player1["name"], game.player1["id"]),
-                    X,
-                    vs,
+                    emojis.X,
+                    emojis.vs,
                     mention(game.player2["name"], game.player2["id"]),
-                    O,
-                    draw
+                    emojis.O,
+                    emojis.draw
                 )
             else:
                 message_text = "{}({})  {}  {}({})\n\n{} **{} ({})**".format(
                     mention(game.player1["name"], game.player1["id"]),
-                    X,
-                    vs,
+                    emojis.X,
+                    emojis.vs,
                     mention(game.player2["name"], game.player2["id"]),
-                    O,
-                    game,
+                    emojis.O,
+                    emojis.game,
                     mention(game.player1["name"], game.player1["id"]) if game.whose_turn else
                     mention(game.player2["name"], game.player2["id"]),
-                    X if game.whose_turn else O
+                    emojis.X if game.whose_turn else emojis.O
                 )
 
             bot.edit_inline_text(
@@ -255,20 +256,20 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
         else:
             bot.answer_callback_query(
                 query.id,
-                "Ini bukan room kamu!"
+                "This one is already taken!"
             )
     elif data["type"] == "R":  # Reset
         game = reset_game(game)
 
         message_text = "{}({})  {}  {}({})\n\n{} **{} ({})**".format(
             mention(game.player1["name"], game.player1["id"]),
-            X,
-            vs,
+            emojis.X,
+            emojis.vs,
             mention(game.player2["name"], game.player2["id"]),
-            O,
-            game,
+            emojis.O,
+            emojis.game,
             mention(game.player1["name"], game.player1["id"]),
-            X
+            emojis.X
         )
 
         bot.edit_inline_text(
@@ -281,10 +282,10 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
             bot.edit_message_text(
                 query.from_user.id,
                 query.message.message_id,
-                "ryppain@gmail.com",
+                "reza.farjam78@gmail.com",
                 reply_markup=InlineKeyboardMarkup(
                     [[InlineKeyboardButton(
-                        back + " Kembali",
+                        emojis.back + " Back",
                         json.dumps(
                             {"type": "C",
                              "action": "email-back"
