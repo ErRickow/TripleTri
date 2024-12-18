@@ -21,7 +21,12 @@ class ErGame:
         ]
         self.board_keys = [
             [InlineKeyboardButton(
-                ".", callback_data=f"K_{i}_{j}_0"  # Data lebih pendek
+                ".",
+                json.dumps({
+                    "type": "K",
+                    "coord": (i, j),
+                    "end": False
+                })
             ) for j in range(3)]
             for i in range(3)
         ]
