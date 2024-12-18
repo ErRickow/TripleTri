@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "Starting Flask server..."
+python3 server.py &
+
+echo "Starting TripleTri Bot..."
+python3 main.py  
