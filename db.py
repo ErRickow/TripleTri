@@ -385,38 +385,37 @@ class DatabaseClient:
             cursor.execute(
                 "DELETE FROM floods WHERE gw = ? AND user_id = ?", (gw, user_id)
             )
-            
-  def get_served_chats() -> list:
-      """Mengambil semua served chat dari database."""
-      dB._check_connection()
-      with dB._connection as conn:
-          cursor = conn.cursor()
-          cursor.execute("SELECT chat_id FROM served_chats")
-          rows = cursor.fetchall()
-          return [{"chat_id": row[0]} for row in rows]
-            
-    def is_served_chat(chat_id: int) -> bool:
+
+    def get_served_chats(self) -> list:
+        """Mengambil semua served chat dari database."""
+        self._check_connection()
+        with self._connection as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT chat_id FROM served_chats")
+            rows = cursor.fetchall()
+            return [{"chat_id": row[0]} for row in rows]
+
+    def is_served_chat(self, chat_id: int) -> bool:
         """Memeriksa apakah chat tertentu sudah dilayani."""
-        dB._check_connection()
-        with dB._connection as conn:
+        self._check_connection()
+        with self._connection as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT 1 FROM served_chats WHERE chat_id = ?", (chat_id,))
             result = cursor.fetchone()
             return bool(result)
-            
-    def add_served_chat(chat_id: int):
+
+    def add_served_chat(self, chat_id: int):
         """Menambahkan chat baru ke served chats."""
-        if is_served_chat(chat_id):
-            return  # Jika sudah ada, tidak perlu ditambahkan
-        dB._check_connection()
-        with dB._connection as conn:
-            cursor = conn.cursor()
-            cursor.execute("INSERT INTO served_chats (chat_id) VALUES (?)", (chat_id,))
-            
-    def delete_served_chat(chat_id: int):
+        if not self.is_served_chat(chat_id):  # Periksa apakah chat sudah ada
+            self._check_connection()
+            with self._connection as conn:
+                cursor = conn.cursor()
+                cursor.execute("INSERT INTO served_chats (chat_id) VALUES (?)", (chat_id,))
+
+    def delete_served_chat(self, chat_id: int):
         """Menghapus chat dari served chats."""
-        dB._check_connection()
-        with dB._connection as conn:
+        self._check_connection()
+        with self._connection as conn:
             cursor = conn.cursor()
             cursor.execute("DELETE FROM served_chats WHERE chat_id = ?", (chat_id,))
             
