@@ -327,79 +327,100 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
                 reply_markup=CONTACT_KEYS
             )
 
-@app.on_message(filters.command("bro") & filters.user(1448273246))
+@app.on_message(filters.command("bro") & SUDOERS)
 async def broadcast_message(client, message):
     global IS_BROADCASTING
-    if IS_BROADCASTING:
-        return await message.reply_text("Broadcast sudah berjalan, tunggu selesai.")
-
-    IS_BROADCASTING = True
-    query = None
-    x, y = None, None
-
     if message.reply_to_message:
         x = message.reply_to_message.id
         y = message.chat.id
     else:
         if len(message.command) < 2:
-            IS_BROADCASTING = False
-            return await message.reply_text("Mohon sertakan pesan atau balas ke pesan untuk broadcast.")
+            return await message.reply_text("❗ Perintah tidak lengkap. Berikan teks atau balas pesan untuk broadcast.")
         query = message.text.split(None, 1)[1]
+        if "-pin" in query:
+            query = query.replace("-pin", "")
+        if "-nobot" in query:
+            query = query.replace("-nobot", "")
+        if "-pinloud" in query:
+            query = query.replace("-pinloud", "")
+        if "-user" in query:
+            query = query.replace("-user", "")
+        if query == "":
+            return await message.reply_text("❗ Berikan tipe broadcast atau teks yang sesuai.")
 
-    flags = ["-pin", "-nobot", "-pinloud", "-user"]
-    options = {flag: flag in query for flag in flags}
-    query = query
-    for flag in flags:
-        query = query.replace(flag, "").strip()
+    IS_BROADCASTING = True
 
     # Bot broadcast inside chats
-    if not options["-nobot"]:
-        sent, pin = 0, 0
-        chats = [int(chat["chat_id"]) for chat in dB.get_served_chats() or []]
-
-        for chat_id in chats:
-            if chat_id == LOGS_GROUP_ID:
+    if "-nobot" not in message.text:
+        sent = 0
+        pin = 0
+        chats = []
+        schats = dB.get_served_chats()  # Mengambil semua served chats dari database
+        chats = [int(chat["chat_id"]) for chat in schats]
+        for i in chats:
+            if i == config.LOG_GROUP_ID:
                 continue
             try:
-                msg = (
-                    await app.forward_messages(chat_id, y, x)
-                    if x and y
-                    else await app.send_message(chat_id, text=query)
+                m = (
+                    await client.forward_messages(i, y, x)
+                    if message.reply_to_message
+                    else await client.send_message(i, text=query)
                 )
-                if options["-pin"]:
+                if "-pin" in message.text:
                     try:
-                        await msg.pin(disable_notification=True)
+                        await m.pin(disable_notification=True)
                         pin += 1
                     except Exception:
                         continue
-                elif options["-pinloud"]:
+                elif "-pinloud" in message.text:
                     try:
-                        await msg.pin(disable_notification=False)
+                        await m.pin(disable_notification=False)
                         pin += 1
                     except Exception:
                         continue
                 sent += 1
             except FloodWait as e:
-                await asyncio.sleep(e.value)
+                flood_time = int(e.value)
+                if flood_time > 200:
+                    continue
+                await asyncio.sleep(flood_time)
             except Exception:
                 continue
-        await message.reply_text(f"Broadcast selesai: {sent} pesan terkirim, {pin} pesan di-pin.")
+        try:
+            await message.reply_text(
+                f"✅ **Broadcast selesai!**\n\n"
+                f"📨 Pesan berhasil dikirim ke **{sent} grup**.\n"
+                f"📌 **{pin} pesan dipin** dalam grup."
+            )
+        except:
+            pass
 
     # Bot broadcasting to users
-    if options["-user"]:
-        sent_users = 0
-        users = dB.get_list_from_var(app.me.id, "BROADCAST") or []
-
-        for user_id in users:
+    if "-user" in message.text:
+        susr = 0
+        susers = dB.get_list_from_var(client.me.id, "BROADCAST")  # Mengambil data broadcast users
+        for user_id in susers:
             try:
-                await app.send_message(user_id, query)
-                sent_users += 1
+                m = (
+                    await client.forward_messages(user_id, y, x)
+                    if message.reply_to_message
+                    else await client.send_message(user_id, text=query)
+                )
+                susr += 1
             except FloodWait as e:
-                await asyncio.sleep(e.value)
+                flood_time = int(e.value)
+                if flood_time > 200:
+                    continue
+                await asyncio.sleep(flood_time)
             except Exception:
-                continue
-        await message.reply_text(f"Broadcast selesai untuk {sent_users} pengguna.")
-
+                pass
+        try:
+            await message.reply_text(
+                f"✅ **Broadcast selesai!**\n\n"
+                f"📨 Pesan berhasil dikirim ke **{susr} pengguna.**"
+            )
+        except:
+            pass
     IS_BROADCASTING = False
 
 if __name__ == "__main__":
