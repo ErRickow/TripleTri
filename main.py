@@ -1,7 +1,7 @@
 import os
 from urllib.parse import quote
 from Tic.data import *
-from config import LOGS_GROUP_ID, MUST_JOIN, ownr, SUDOERS
+from config import LOGS_GROUP_ID, MUST_JOIN, ownr
 from Tic.emoji import *
 from Tic.util import dB, SUDOERS
 from Tic.erornya import bajingan
