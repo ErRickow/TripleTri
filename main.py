@@ -113,6 +113,7 @@ def start_handler(bot: Client, message: Message):
     bot.send_message(
         message.chat.id,
         text,
+        effect_id=effect_id,
         reply_markup=reply_markup
     )
 
