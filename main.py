@@ -55,7 +55,7 @@ def must_join_channel(app: Client, msg: Message):
     brod = dB.get_list_from_var(app.me.id, "BROADCAST")
     if message.from_user.id not in brod:
         dB.add_to_var(bot.me.id, "BROADCAST", message.from_user.id)
-    if not MUST_JOIN:
+    elif not MUST_JOIN:
         return
     try:
         for channel in MUST_JOIN:
