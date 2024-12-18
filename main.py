@@ -53,7 +53,7 @@ def must_join_channel(app: Client, msg: Message):
     try:
         for channel in MUST_JOIN:
             try:
-                app.get_chat_member(channel, msg.from_user.id)
+                await app.get_chat_member(channel, msg.from_user.id)
             except UserNotParticipant:
                 app.send_message(
                     LOGS_GROUP_ID,
