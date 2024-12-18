@@ -4,6 +4,7 @@ from Tic.data import *
 from config import LOGS_GROUP_ID, MUST_JOIN
 from Tic.emoji import *
 from Tic.util import dB
+from Tic.erornya import bajingan
 from dotenv import load_dotenv
 from pyrogram import Client, filters
 from pyrogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessageContent, \
@@ -301,5 +302,5 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
             )
 
 if __name__ == "__main__":
-    from Tic.erornya import bajingan
+    print("im on now")
     app.run()
