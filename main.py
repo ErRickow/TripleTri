@@ -97,9 +97,9 @@ def start_handler(bot: Client, message: Message):
         dB.add_to_var(bot.me.id, "BROADCAST", message.from_user.id)
     bot.send_message(
         message.chat.id,
-        "<blockquote>Hi **{message.from_user.first_name}**,</blockquote>\n\n"
-        "<blockquote>Untuk memulai, kamu bisa langsung menggunakan fitur ini tanpa perlu menambahkan {bot.me.mention} ke grup.</blockquote>\n\n"
-        "<blockquote>Yang penting, grup yang kamu pilih **tidak dalam kondisi terbatas (restricted)** dan memungkinkan penggunaan fitur ini.</blockquote>\n\n"
+        f"<blockquote>Hi **{message.from_user.first_name}**,</blockquote>\n"
+        "<blockquote>Untuk memulai, kamu bisa langsung menggunakan fitur ini tanpa perlu menambahkan {bot.me.mention} ke grup.</blockquote>"
+        "<blockquote>Yang penting, grup yang kamu pilih **tidak dalam kondisi terbatas (restricted)** dan memungkinkan penggunaan fitur ini.</blockquote>"
         "<blockquote>Klik tombol **Bermain** dan pilih grup mana pun yang kamu inginkan untuk memulai.</blockquote>",
         effect_id=5046509860389126442,
         reply_markup=InlineKeyboardMarkup([
