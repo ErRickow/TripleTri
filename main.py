@@ -131,7 +131,7 @@ def stats_handler(bot: Client, message: Message):
         f"⏳ Total Waktu Bermain: {formatted_time}\n"
     )
 
-    bot.send_message(message.chat.id, response, reply_to_message_id=message.reply_to_message.id, reply_markup=CONTACT_KEYS)
+    bot.send_message(message.chat.id, response, reply_markup=CONTACT_KEYS)
 
 @app.on_inline_query()
 def inline_query_handler(_, query: InlineQuery):
