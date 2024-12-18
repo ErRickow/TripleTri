@@ -138,8 +138,24 @@ def contact_handler(bot: Client, message: Message):
         "Kamu bisa mengirimkan saran atau masukan langsung kepada pemilik bot ini di sini",
         reply_to_message_id=message.id,
         reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton("Hubungi owner", url="https://t.me/chakszzz")],
+            [InlineKeyboardButton("Contact Owner", url="https://t.me/chakszzz")],
             [InlineKeyboardButton("Admin Side", url="https://t.me/Dvllll023")]
+        ])
+    )
+
+@app.on_message(filters.command("contact") & filters.group)
+@bajingan
+def contact_handler(bot: Client, message: Message):
+    chatid = message.chat.id
+
+    if not dB.is_served_chat(chatid):
+        dB.add_served_chat(chatid)
+    bot.send_message(
+        message.chat.id,
+        "Report bug, ke owner di bawah",
+        reply_to_message_id=message.id,
+        reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton("🔰Hubungi owner", url="https://t.me/chakszzz")], [InlineKeyboardButton("Admin Side🗨️", url="https://t.me/Dvllll023")]
         ])
     )
 
@@ -150,9 +166,8 @@ def stats_handler(bot: Client, message: Message):
     stats = dB.get_user_stats(user_id)
     chatid = message.chat.id
 
-    # Pengecekan apakah chat ID sudah masuk ke database
-    if not dB.is_served_chat(chatid):  # Jika chat ID belum ada
-        dB.add_served_chat(chatid)  # Tambahkan chat ID ke database
+    if not dB.is_served_chat(chatid):
+        dB.add_served_chat(chatid)
 
     # Format waktu bermain
     hours, remainder = divmod(stats["total_play_time"], 3600)
@@ -169,7 +184,7 @@ def stats_handler(bot: Client, message: Message):
         f"⏳ Total Waktu Bermain: {formatted_time}\n"
     )
 
-    bot.send_message(message.chat.id, response, reply_markup=CONTACT_KEYS)
+    bot.send_message(message.chat.id, response, reply_to_message_id=message.id, reply_markup=CONTACT_KEYS)
 
 @app.on_inline_query()
 def inline_query_handler(_, query: InlineQuery):
