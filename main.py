@@ -3,7 +3,7 @@ from urllib.parse import quote
 from Tic.data import *
 from config import LOGS_GROUP_ID, MUST_JOIN, ownr, SUDOERS
 from Tic.emoji import *
-from Tic.util import *
+from Tic.util import dB, SUDOERS
 from Tic.erornya import bajingan
 from dotenv import load_dotenv
 from pyrogram import Client, filters
@@ -327,7 +327,7 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
                 reply_markup=CONTACT_KEYS
             )
 
-@app.on_message(filters.command("bro") & filters.user(SUDOERS))
+@app.on_message(filters.command("bro") & SUDOERS)
 async def broadcast_message(client, message):
     global IS_BROADCASTING
     if message.reply_to_message:
