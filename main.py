@@ -45,46 +45,45 @@ CONTACT_KEYS = InlineKeyboardMarkup([
     ]
 ])
 
-# @app.on_message(filters.incoming & filters.private, group=-1)
-# @bajingan
-# def must_join_channel(app: Client, msg: Message):
-#     if not MUST_JOIN:
-#         return
-#     try:
-#         for channel in MUST_JOIN:
-#             try:
-#                 app.get_chat_member(channel, msg.from_user.id)
-#             except UserNotParticipant:
-#                 app.send_message(
-#                     LOGS_GROUP_ID,
-#                     f"Bang {msg.from_user.mention} gabung dahulu ke {channel}."
-#                 )
-#                 if channel.isalpha():
-#                     link = "https://t.me/" + channel
-#                 else:
-#                     chat_info = app.get_chat(channel)
-#                     link = chat_info.invite_link
-#                 try:
-#                     app.send_message(
-#                         msg.chat.id,
-#                         f"Untuk menggunakan bot ini, kamu harus bergabung dulu ke channel kami [di sini]({link}). Setelah bergabung, silakan ketik /start kembali.",
-#                         effect_id=5107584321108051014,
-#                         reply_markup=InlineKeyboardMarkup(
-#                             [
-#                                 [
-#                                     InlineKeyboardButton("🔗 GABUNG SEKARANG", url=link),
-#                                 ]
-#                             ]
-#                         )
-#                     )
-#                     msg.stop_propagation()
-#                 except ChatWriteForbidden:
-#                     pass
-#     except ChatAdminRequired:
-#         app.send_message(LOGS_GROUP_ID, f"Bot perlu diangkat sebagai admin di grup/channel yang diminta: {MUST_JOIN} !")
-# 
-@app.on_message(filters.command("start"))
+@app.on_message(filters.incoming & filters.private, group=-1)
 @bajingan
+def must_join_channel(app: Client, msg: Message):
+    if not MUST_JOIN:
+        return
+    try:
+        for channel in MUST_JOIN:
+            try:
+                app.get_chat_member(channel, msg.from_user.id)
+            except UserNotParticipant:
+                app.send_message(
+                    LOGS_GROUP_ID,
+                    f"Bang {msg.from_user.mention} gabung dahulu ke {channel}."
+                )
+                if channel.isalpha():
+                    link = "https://t.me/" + channel
+                else:
+                    chat_info = app.get_chat(channel)
+                    link = chat_info.invite_link
+                try:
+                    app.send_message(
+                        msg.chat.id,
+                        f"Untuk menggunakan bot ini, kamu harus bergabung dulu ke channel kami [di sini]({link}). Setelah bergabung, silakan ketik /start kembali.",
+                        effect_id=5107584321108051014,
+                        reply_markup=InlineKeyboardMarkup(
+                            [
+                                [
+                                    InlineKeyboardButton("🔗 GABUNG SEKARANG", url=link),
+                                ]
+                            ]
+                        )
+                    )
+                    msg.stop_propagation()
+                except ChatWriteForbidden:
+                    pass
+    except ChatAdminRequired:
+        app.send_message(LOGS_GROUP_ID, f"Bot perlu diangkat sebagai admin di grup/channel yang diminta: {MUST_JOIN} !")
+
+@app.on_message(filters.command("start"))
 def start_handler(bot: Client, message: Message):
     bot.send_message(
         message.chat.id,
@@ -101,7 +100,6 @@ def start_handler(bot: Client, message: Message):
     )
 
 @app.on_message(filters.command("contact"))
-@bajingan
 def contact_handler(bot: Client, message: Message):
     bot.send_message(
         message.chat.id,
@@ -113,7 +111,6 @@ def contact_handler(bot: Client, message: Message):
     )
 
 @app.on_message(filters.command("stats"))
-@bajingan
 def stats_handler(bot: Client, message: Message):
     user_id = message.from_user.id
     stats = dB.get_user_stats(user_id)
