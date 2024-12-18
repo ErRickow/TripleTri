@@ -3,6 +3,8 @@ import time
 from config import ownr, botid
 from pyrogram import filters
 
+SUDOERS = set()
+
 def update_stats(user_id, result, start_time):
     stats = dB.get_user_stats(user_id)  # Ambil data dari database
 
@@ -25,7 +27,7 @@ def update_stats(user_id, result, start_time):
     
 def sudo():
     global SUDOERS
-    SUDOERS = set()
+
     OWNER = ownr  # Daftar pemilik bot (OWNER)
     
     # Memuat sudoers dari database SQLite
