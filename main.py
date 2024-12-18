@@ -108,6 +108,25 @@ def start_handler(bot: Client, message: Message):
         ])
     )
 
+@app.on_message(filters.command("start") & filters.group)
+@bajingan
+def start_handler_group(bot: Client, message: Message):
+    chatid = message.chat.id
+
+    if not dB.is_served_chat(chatid):
+        dB.add_served_chat(chatid)
+
+    bot.send_message(
+        message.chat.id,
+        f"Hallo kamu yang di **{message.chat.title}**!\n\nKlik **Play** untuk memulai!",
+        reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton(
+                "🎮 Play",
+                switch_inline_query=game
+            )]
+        ])
+    )
+
 @app.on_message(filters.command("contact") & filters.private)
 @bajingan
 def contact_handler(bot: Client, message: Message):
