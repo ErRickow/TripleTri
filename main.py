@@ -82,7 +82,7 @@ def must_join_channel(app: Client, msg: Message):
     except ChatAdminRequired:
         app.send_message(LOGS_GROUP_ID, f"Bot perlu diangkat sebagai admin di grup/channel yang diminta: {MUST_JOIN} !")
 
-@app.on_message(filters.command("start"))
+@app.on_message(filters.command("start") & filters.private)
 def start_handler(bot: Client, message: Message):
     bot.send_message(
         message.chat.id,
