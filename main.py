@@ -110,7 +110,7 @@ def contact_handler(bot: Client, message: Message):
         "Bebas saran ke owner.",
         reply_markup=InlineKeyboardMarkup([
             [InlineKeyboardButton("Hubungi owner", url="https://t.me/chakszzz")],
-            [InlineKeyboardButton("Admin Side", url="https://t.me/Adl0878")]
+            [InlineKeyboardButton("Admin Side", url="https://t.me/Dvllll023")]
         ])
     )
 
