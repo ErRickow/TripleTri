@@ -1,6 +1,7 @@
 import os
 
 from Tic.data import *
+from config import LOGS_GROUP_ID, MUST_JOIN
 from Tic.emoji import *
 from Tic.util import dB
 from Tic.erornya import bajingan
@@ -43,10 +44,7 @@ CONTACT_KEYS = InlineKeyboardMarkup([
     ]
 ])
 
-MUST_JOIN = ["Er_support_group", "Ctbb_Un"]
-LOGS_GROUP_ID = -1002423575637
-
-@app.on_message(filters.incoming , group=-1)
+@app.on_message(filters.incoming, filters.private, group=-1)
 @bajingan
 async def must_join_channel(app: Client, msg: Message):
     if not MUST_JOIN:
@@ -303,6 +301,6 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
                 reply_markup=CONTACT_KEYS
             )
 
-    
-
-app.run()
+if __name__ == "__main__":
+    from Tic.erornya import bajingan
+    app.run()
