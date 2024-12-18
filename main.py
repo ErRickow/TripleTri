@@ -135,7 +135,7 @@ def contact_handler(bot: Client, message: Message):
         dB.add_to_var(bot.me.id, "BROADCAST", message.from_user.id)
     bot.send_message(
         message.chat.id,
-        "Bebas saran ke owner.",
+        "Kamu bisa mengirimkan saran atau masukan langsung kepada pemilik bot ini di sini",
         reply_to_message_id=message.id,
         reply_markup=InlineKeyboardMarkup([
             [InlineKeyboardButton("Hubungi owner", url="https://t.me/chakszzz")],
