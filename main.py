@@ -21,7 +21,7 @@ app = Client("er",
 
 IS_BROADCASTING = False
 
-sudoers = dB.get_list_from_var(app.me.id, "sudoers", "userid")
+sudoers = dB.get_list_from_var(Client.me.id, "sudoers", "userid")
 sudoers.append(ownr)
 
 def mention(name: str, id: int) -> str:
