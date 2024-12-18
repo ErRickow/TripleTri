@@ -87,11 +87,11 @@ def start_handler(bot: Client, message: Message):
     bot.send_message(
         message.chat.id,
         f"Hi **{message.from_user.first_name}**\n\nUntuk memulai, start terlebih dahulu, "
-        "dengan @TripleTBot di group kamu atau klik Tombol **Bermain** "
+        f"dengan {bot.me.mention} di group kamu atau klik Tombol **Bermain** "
         "dan pilih group mana pun.",
         reply_markup=InlineKeyboardMarkup([
             [InlineKeyboardButton(
-                "🎮 Bermain",
+                "🎮",
                 switch_inline_query="Bermain"
             )]
         ])
@@ -101,9 +101,10 @@ def start_handler(bot: Client, message: Message):
 def contact_handler(bot: Client, message: Message):
     bot.send_message(
         message.chat.id,
-        "Feel free to share your thoughts on Telegram with me.",
+        "Bebas saran ke owner.",
         reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton("Hubungi Admin", url="https://t.me/your_username")]
+            [InlineKeyboardButton("Hubungi owner", url="https://t.me/chakszzz")],
+            [InlineKeyboardButton("Admin Side", url="https://t.me/Adl0878")]
         ])
     )
 
@@ -117,7 +118,7 @@ def stats_handler(bot: Client, message: Message):
     formatted_time = f"{hours}h {minutes}m {seconds}s"
 
     response = (
-        f"📊 **Statistik Anda**:\n\n"
+        f"📊 **Statistik {message.from_user.first_name}**:\n\n"
         f"🎮 Total Permainan: {stats['games_played']}\n"
         f"🏆 Kemenangan: {stats['games_won']}\n"
         f"😞 Kekalahan: {stats['games_lost']}\n"
