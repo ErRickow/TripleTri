@@ -115,6 +115,7 @@ def start_handler(bot: Client, message: Message):
         "<blockquote>Yang penting, grup yang kamu pilih **tidak dalam kondisi terbatas (restricted)** dan memungkinkan penggunaan fitur ini.</blockquote>"
         "<blockquote>Klik tombol **Bermain** dan pilih grup mana pun yang kamu inginkan untuk memulai.</blockquote>",
         effect_id=5046509860389126442,
+        reply_to_message_id=message.id,
         reply_markup=InlineKeyboardMarkup([
             [InlineKeyboardButton(
                 "🎮 Bermain",
@@ -134,6 +135,7 @@ def start_handler_group(bot: Client, message: Message):
     bot.send_message(
         message.chat.id,
         f"Hallo kamu yang di **{message.chat.title}**!\n\nKlik **Play** untuk memulai!",
+        reply_to_message_id=message.id,
         reply_markup=InlineKeyboardMarkup([
             [InlineKeyboardButton(
                 "🎮 Play",
