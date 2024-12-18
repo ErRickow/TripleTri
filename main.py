@@ -1,5 +1,5 @@
 import os
-import unicodedata
+from urllib.parse import quote
 from Tic.data import *
 from config import LOGS_GROUP_ID, MUST_JOIN
 from Tic.emoji import *
@@ -137,12 +137,21 @@ def stats_handler(bot: Client, message: Message):
 
 @app.on_inline_query()
 def inline_query_handler(_, query: InlineQuery):
-    namanya = query.from_user.first_name if query.from_user.first_name else query.from_user.id
+    try:
+        
+        namanya = query.from_user.first_name
+        if not namanya:
+            namanya = query.from_user.mention
+    except Exception as e:
+        namanya = query.from_user.mention
+        
+    namaLo = quote(namanya)
+    
     query.answer(
         results=[InlineQueryResultArticle(
             title="Tic-Tac-Toe",
             input_message_content=InputTextMessageContent(
-                f"**{namanya} Menantang untuk bermain!**"
+                f"**{namaLo} Menantang untuk bermain!**"
             ),
             description="Pencet Disini Untuk Menantang Temanmu!",
             thumb_url="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Tic_tac_toe.svg/1200px-Tic_tac_toe"
@@ -153,7 +162,7 @@ def inline_query_handler(_, query: InlineQuery):
                     json.dumps(
                         {"type": "P",
                          "id": query.from_user.id,
-                         "name": query.from_user.first_name
+                         "name": namaLo
                          }
                     )
                 )]]
