@@ -53,8 +53,8 @@ CONTACT_KEYS = InlineKeyboardMarkup([
 @bajingan
 def must_join_channel(app: Client, msg: Message):
     brod = dB.get_list_from_var(app.me.id, "BROADCAST")
-    if message.from_user.id not in brod:
-        dB.add_to_var(bot.me.id, "BROADCAST", message.from_user.id)
+    if msg.from_user.id not in brod:
+        dB.add_to_var(bot.me.id, "BROADCAST", msg.from_user.id)
     elif not MUST_JOIN:
         return
     try:
@@ -98,12 +98,12 @@ def start_handler(bot: Client, message: Message):
         dB.add_to_var(bot.me.id, "BROADCAST", message.from_user.id)
     bot.send_message(
         message.chat.id,
-        f"Hi **{message.from_user.first_name}**\n\nUntuk memulai, start terlebih dahulu, "
-        f"dengan {bot.me.mention} di group kamu atau klik Tombol **Bermain** "
-        "dan pilih group mana pun.",
+        f"Hi **{message.from_user.first_name}**\n\nUntuk memulai, kamu bisa langsung menggunakan fitur ini tanpa perlu menambahkan {bot.me.mention} ke grup. "
+        "Yang penting, grup yang kamu pilih tidak dalam kondisi terbatas (restricted) dan memungkinkan penggunaan fitur ini. "
+        "Klik Tombol **Bermain** dan pilih grup mana pun yang kamu inginkan untuk memulai."
         reply_markup=InlineKeyboardMarkup([
             [InlineKeyboardButton(
-                "🎮",
+                "🎮 Bermain",
                 switch_inline_query=game
             )]
         ])
