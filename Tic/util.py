@@ -1,8 +1,9 @@
 from db import dB  # Pastikan Anda mengimpor dB
 import time
 from config import ownr, botid
+from pyrogram import filters
 
-SUDOERS = filter.user()
+SUDOERS = filters.user()
 
 def update_stats(user_id, result, start_time):
     stats = dB.get_user_stats(user_id)  # Ambil data dari database
