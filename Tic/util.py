@@ -2,7 +2,7 @@ from db import dB  # Pastikan Anda mengimpor dB
 import time
 from config import ownr, botid
 
-SUDOERS = filters.user()
+SUDOERS = filter.user()
 
 def update_stats(user_id, result, start_time):
     stats = dB.get_user_stats(user_id)  # Ambil data dari database
