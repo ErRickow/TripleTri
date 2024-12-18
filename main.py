@@ -121,6 +121,7 @@ def start_handler_group(bot: Client, message: Message):
     bot.send_message(
         message.chat.id,
         f"Hallo kamu yang di **{message.chat.title}**!\n\nKlik **Play** untuk memulai!",
+        effect_id=5159385139981059251,
         reply_markup=InlineKeyboardMarkup([
             [InlineKeyboardButton(
                 "🎮 Play",
