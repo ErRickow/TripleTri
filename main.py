@@ -156,7 +156,9 @@ def inline_query_handler(_, query: InlineQuery):
 def callback_query_handler(bot: Client, query: CallbackQuery):
     data = json.loads(query.data)
     game = get_game(query.inline_message_id, data)
-    if data["type"] == "P":  # Player
+    if data.startswith("P_"):
+        player_id = int(data.split("_")[1])
+    # Lanjutkan proses...
         if game.player1["id"] == query.from_user.id:
             bot.answer_callback_query(
                 query.id,
