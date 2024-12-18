@@ -74,22 +74,24 @@ def contact_handler(bot: Client, message: Message):
 
 @app.on_message(filters.command("stats"))
 def stats_handler(bot: Client, message: Message):
-    user_id = str(message.from_user.id)
-    stats = load_stats()
-    user_stats = stats.get(user_id, {"games_played": 0, "games_won": 0, "games_draw": 0})
+    user_id = message.from_user.id
+    stats = dB.get_user_stats(user_id)  # Ambil data dari database
+
+    # Konversi waktu bermain ke format jam:menit:detik
+    hours, remainder = divmod(stats["total_play_time"], 3600)
+    minutes, seconds = divmod(remainder, 60)
+    formatted_time = f"{hours}h {minutes}m {seconds}s"
 
     response = (
         f"📊 **Statistik Anda**:\n\n"
-        f"🎮 Total Permainan: {user_stats['games_played']}\n"
-        f"🏆 Kemenangan: {user_stats['games_won']}\n"
-        f"🤝 Seri: {user_stats['games_draw']}\n"
+        f"🎮 Total Permainan: {stats['games_played']}\n"
+        f"🏆 Kemenangan: {stats['games_won']}\n"
+        f"😞 Kekalahan: {stats['games_lost']}\n"
+        f"🤝 Seri: {stats['games_draw']}\n"
+        f"⏳ Total Waktu Bermain: {formatted_time}\n"
     )
 
-    bot.send_message(
-        message.chat.id,
-        response,
-        reply_markup=CONTACT_KEYS
-    )
+    bot.send_message(message.chat.id, response, reply_markup=CONTACT_KEYS)
 
 @app.on_inline_query()
 def inline_query_handler(_, query: InlineQuery):
