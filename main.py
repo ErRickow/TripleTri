@@ -44,7 +44,7 @@ CONTACT_KEYS = InlineKeyboardMarkup([
     ]
 ])
 
-@app.on_message(filters.incoming, filters.private, group=-1)
+@app.on_message(filters.incoming & filters.private, group=-1)
 @bajingan
 async def must_join_channel(app: Client, msg: Message):
     if not MUST_JOIN:
