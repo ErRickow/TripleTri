@@ -88,12 +88,14 @@ def must_join_channel(app: Client, msg: Message):
 def start_handler(bot: Client, message: Message):
     bot.send_message(
         message.chat.id,
-        f"Untuk memulai, klik tombol **Bermain** dan pilih grup untuk bermain.",
+        f"Hi **{message.from_user.first_name}**\n\nUntuk memulai, start terlebih dahulu, "
+        f"dengan {bot.me.mention} di group kamu atau klik Tombol **Bermain** "
+        "dan pilih group mana pun.",
         effect_id=5107584321108051014,
         reply_markup=InlineKeyboardMarkup([
             [InlineKeyboardButton(
                 "🎮 Bermain",
-                switch_inline_query=" main"
+                switch_inline_query=" Main"
             )]
         ])
     )
@@ -144,7 +146,13 @@ def inline_query_handler(_, query: InlineQuery):
                       ".svg.png",
             reply_markup=InlineKeyboardMarkup(
                 [[InlineKeyboardButton(
-                    swords + " Accept"
+                    swords + " Accept",
+                    json.dumps(
+                        {"type": "P",
+                         "id": query.from_user.id,
+                         "name": query.from_user.first_name
+                         }
+                    )
                 )]]
             )
         )],
@@ -276,7 +284,12 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
                 "ryppain@gmail.com",
                 reply_markup=InlineKeyboardMarkup(
                     [[InlineKeyboardButton(
-                        back + " Kembali"
+                        back + " Kembali",
+                        json.dumps(
+                            {"type": "C",
+                             "action": "email-back"
+                             }
+                        )
                     )]]
                 )
             )
