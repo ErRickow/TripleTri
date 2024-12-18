@@ -176,7 +176,7 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
         elif game.player1["id"] != query.from_user.id:
             game.player2 = {"type": "P",
                             "id": query.from_user.id,
-                            "name": query.from_user.first_name
+                            "name": query.from_user.mention
                             }
 
             message_text = "{}({})  {}  {}({})\n\n{} **{} ({})**".format(
