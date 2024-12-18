@@ -112,8 +112,8 @@ def start_handler(bot: Client, message: Message):
     bot.send_message(
         message.chat.id,
         f"<blockquote>Hi **{org.first_name}**,</blockquote>\n"
-        f"<blockquote>Untuk memulai, kamu bisa langsung menggunakan fitur ini tanpa perlu menambahkan {bot.me.mention} ke grup.</blockquote>"
-        "<blockquote>Yang penting, grup yang kamu pilih **tidak dalam kondisi terbatas (restricted)** dan memungkinkan penggunaan fitur ini.</blockquote>"
+        f"<blockquote>Untuk memulai, kamu bisa langsung menggunakan fitur ini tanpa perlu menambahkan {bot.me.mention} ke grup.</blockquote>\n"
+        "<blockquote>Yang penting, grup yang kamu pilih __**tidak dalam kondisi terbatas (restricted)**__ dan memungkinkan penggunaan fitur ini.</blockquote>\n"
         "<blockquote>Klik tombol **Bermain** dan pilih grup mana pun yang kamu inginkan untuk memulai.</blockquote>",
         effect_id=5046509860389126442,
         reply_to_message_id=message.id,
