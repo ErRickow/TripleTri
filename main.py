@@ -145,13 +145,12 @@ def inline_query_handler(_, query: InlineQuery):
     except Exception as e:
         namanya = query.from_user.mention
         
-    namaLo = quote(namanya)
     
     query.answer(
         results=[InlineQueryResultArticle(
             title="Tic-Tac-Toe",
             input_message_content=InputTextMessageContent(
-                f"**{namaLo} Menantang untuk bermain!**"
+                f"**{namanya} Menantang untuk bermain!**"
             ),
             description="Pencet Disini Untuk Menantang Temanmu!",
             thumb_url="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Tic_tac_toe.svg/1200px-Tic_tac_toe"
