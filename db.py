@@ -5,9 +5,7 @@ import stat
 import threading
 from datetime import datetime, timedelta, timezone
 
-from config import db_name
-
-db_path = os.path.abspath(f"./{db_name}.db")
+db_path = os.path.abspath(f"./game.db")
 
 
 class DatabaseClient:
@@ -104,38 +102,6 @@ class DatabaseClient:
     def _check_connection(self):
         if not self._connection:
             raise sqlite3.ProgrammingError("Database connection is closed.")
-
-    # Replacing get_pref
-    def get_pref(self, user_id):
-        self._check_connection()
-        with self._connection as conn:
-            cursor = conn.cursor()
-            cursor.execute(
-                "SELECT prefix FROM user_prefixes WHERE user_id = ?", (user_id,)
-            )
-            result = cursor.fetchone()
-
-            return json.loads(result[0]) if result else [".", "-", "!", "+", "?"]
-
-    # Replacing set_pref
-    def set_pref(self, user_id, prefix):
-        self._check_connection()
-        with self._connection as conn:
-            cursor = conn.cursor()
-            cursor.execute(
-                """
-                INSERT OR REPLACE INTO user_prefixes (user_id, prefix)
-                VALUES (?, ?)
-            """,
-                (user_id, json.dumps(prefix)),
-            )
-
-    # Replacing rem_pref
-    def rem_pref(self, user_id):
-        self._check_connection()
-        with self._connection as conn:
-            cursor = conn.cursor()
-            cursor.execute("DELETE FROM user_prefixes WHERE user_id = ?", (user_id,))
 
     # Replacing set_var
     def set_var(self, bot_id, vars_name, value, query="vars"):
