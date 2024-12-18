@@ -163,6 +163,7 @@ def inline_query_handler(_, query: InlineQuery):
 @app.on_callback_query()
 def callback_query_handler(bot: Client, query: CallbackQuery):
     data = json.loads(query.data)
+    dt = query.data.split("_")
     game = get_game(query.inline_message_id, data)
     if data["type"] == "P":  # Player
         if game.player1["id"] == query.from_user.id:
@@ -193,7 +194,8 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
                 message_text,
                 reply_markup=InlineKeyboardMarkup(game.board_keys)
             )
-    elif data["type"] == "K":  # Keyboard
+    elif dt[0] == "K":  # Keyboard callback
+            x, y, end = int(data[1]), int(data[2]), bool(int(data[3]))  # Keyboard
         if data["end"]:
             bot.answer_callback_query(
                 query.id,
@@ -257,7 +259,7 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
                 query.id,
                 "Ini bukan room kamu!"
             )
-    elif data["type"] == "R":  # Reset
+    elif dt[0] == "R":  # Reset
         game = reset_game(game)
 
         message_text = "{}({})  {}  {}({})\n\n{} **{} ({})**".format(
