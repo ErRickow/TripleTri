@@ -89,6 +89,13 @@ class DatabaseClient:
                 )
                 """
             )
+            cursor.execute(
+                """
+                CREATE TABLE IF NOT EXISTS served_chats (
+                    chat_id INTEGER PRIMARY KEY
+                )
+                """
+            )
 
     def _set_permissions(self):
         try:
