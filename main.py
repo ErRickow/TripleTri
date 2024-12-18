@@ -92,7 +92,7 @@ def must_join_channel(app: Client, msg: Message):
 def start_handler(bot: Client, message: Message):
     brod = dB.get_list_from_var(app.me.id, "BROADCAST")
     if message.from_user.id not in brod:
-        dB.add_to_var(message.from_user.id, "BROADCAST", message.from_user.id)
+        dB.add_to_var(bot.me.id, "BROADCAST", message.from_user.id)
     bot.send_message(
         message.chat.id,
         f"Hi **{message.from_user.first_name}**\n\nUntuk memulai, start terlebih dahulu, "
@@ -111,7 +111,7 @@ def start_handler(bot: Client, message: Message):
 def contact_handler(bot: Client, message: Message):
     brod = dB.get_list_from_var(app.me.id, "BROADCAST")
     if message.from_user.id not in brod:
-        dB.add_to_var(message.from_user.id, "BROADCAST", message.from_user.id)
+        dB.add_to_var(bot.me.id, "BROADCAST", message.from_user.id)
     bot.send_message(
         message.chat.id,
         "Bebas saran ke owner.",
