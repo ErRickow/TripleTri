@@ -141,7 +141,7 @@ def inline_query_handler(_, query: InlineQuery):
         results=[InlineQueryResultArticle(
             title="Tic-Tac-Toe",
             input_message_content=InputTextMessageContent(
-                f"**{query.from_user.mention}** menantang untuk bermain!"
+                f"**{query.from_user.first_name}** menantang untuk bermain!"
             ),
             description="Pencet Disini Untuk Menantang Temanmu!",
             thumb_url="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Tic_tac_toe.svg/1200px-Tic_tac_toe"
