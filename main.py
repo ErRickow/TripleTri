@@ -1,4 +1,5 @@
 import os
+import json
 
 from Tic.data import *
 from config import LOGS_GROUP_ID, MUST_JOIN
@@ -81,12 +82,12 @@ async def must_join_channel(app: Client, msg: Message):
                     pass
     except ChatAdminRequired:
         await app.send_message(LOGS_GROUP_ID, f"Bot perlu diangkat sebagai admin di grup/channel yang diminta: {MUST_JOIN} !")
-        
+
 
 @app.on_message(filters.command("start"))
 @bajingan
-def start_handler(bot: Client, message: Message):
-    bot.send_message(
+async def start_handler(bot: Client, message: Message):
+    await bot.send_message(
         message.chat.id,
         f"Hi **{message.from_user.first_name}**\n\nUntuk memulai, start terlebih dahulu, "
         f"dengan {bot.me.mention} di group kamu atau klik Tombol **Bermain** "
@@ -101,8 +102,8 @@ def start_handler(bot: Client, message: Message):
 
 @app.on_message(filters.command("contact"))
 @bajingan
-def contact_handler(bot: Client, message: Message):
-    bot.send_message(
+async def contact_handler(bot: Client, message: Message):
+    await bot.send_message(
         message.chat.id,
         "Bebas saran ke owner.",
         reply_markup=InlineKeyboardMarkup([
@@ -113,7 +114,7 @@ def contact_handler(bot: Client, message: Message):
 
 @app.on_message(filters.command("stats"))
 @bajingan
-def stats_handler(bot: Client, message: Message):
+async def stats_handler(bot: Client, message: Message):
     user_id = message.from_user.id
     stats = dB.get_user_stats(user_id)
 
@@ -130,12 +131,12 @@ def stats_handler(bot: Client, message: Message):
         f"⏳ Total Waktu Bermain: {formatted_time}\n"
     )
 
-    bot.send_message(message.chat.id, response, reply_markup=CONTACT_KEYS)
+    await bot.send_message(message.chat.id, response, reply_markup=CONTACT_KEYS)
 
 @app.on_inline_query()
 @bajingan
-def inline_query_handler(_, query: InlineQuery):
-    query.answer(
+async def inline_query_handler(_, query: InlineQuery):
+    await query.answer(
         results=[InlineQueryResultArticle(
             title="Tic-Tac-Toe",
             input_message_content=InputTextMessageContent(
@@ -162,12 +163,12 @@ def inline_query_handler(_, query: InlineQuery):
 
 @app.on_callback_query()
 @bajingan
-def callback_query_handler(bot: Client, query: CallbackQuery):
+async def callback_query_handler(bot: Client, query: CallbackQuery):
     data = json.loads(query.data)
     game = get_game(query.inline_message_id, data)
     if data["type"] == "P":  # Player
         if game.player1["id"] == query.from_user.id:
-            bot.answer_callback_query(
+            await bot.answer_callback_query(
                 query.id,
                 "Tunggu Sebentar!",
                 show_alert=True
@@ -189,14 +190,14 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
                 X
             )
 
-            bot.edit_inline_text(
+            await bot.edit_inline_text(
                 query.inline_message_id,
                 message_text,
                 reply_markup=InlineKeyboardMarkup(game.board_keys)
             )
     elif data["type"] == "K":  # Keyboard
         if data["end"]:
-            bot.answer_callback_query(
+            await bot.answer_callback_query(
                 query.id,
                 "Game Berakhir!",
                 show_alert=True
@@ -206,7 +207,7 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
 
         if (game.whose_turn and query.from_user.id != game.player1["id"]) \
                 or (not game.whose_turn and query.from_user.id != game.player2["id"]):
-            bot.answer_callback_query(
+            await bot.answer_callback_query(
                 query.id,
                 "Bukan Giliranmu!"
             )
@@ -248,13 +249,13 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
                     X if game.whose_turn else O
                 )
 
-            bot.edit_inline_text(
+            await bot.edit_inline_text(
                 query.inline_message_id,
                 message_text,
                 reply_markup=InlineKeyboardMarkup(game.board_keys)
             )
         else:
-            bot.answer_callback_query(
+            await bot.answer_callback_query(
                 query.id,
                 "Ini bukan room kamu!"
             )
@@ -272,14 +273,14 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
             X
         )
 
-        bot.edit_inline_text(
+        await bot.edit_inline_text(
             query.inline_message_id,
             message_text,
             reply_markup=InlineKeyboardMarkup(game.board_keys)
         )
     elif data["type"] == "C":  # Contact
         if data["action"] == "email":
-            bot.edit_message_text(
+            await bot.edit_message_text(
                 query.from_user.id,
                 query.message.message_id,
                 "ryppain@gmail.com",
@@ -295,7 +296,7 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
                 )
             )
         elif data["action"] == "email-back":
-            bot.edit_message_text(
+            await bot.edit_message_text(
                 query.from_user.id,
                 query.message.message_id,
                 "Feel free to share your thoughts bot with me.",
