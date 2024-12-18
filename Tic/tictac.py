@@ -36,11 +36,10 @@ class ErGame:
                 if not self.board[i][j]:  # Jika ada sel kosong, permainan belum seri
                     return False
     
-        # Jika tidak ada sel kosong, artinya permainan seri
-        update_stats(self.player1["id"], "draw")
-        if self.player2:  # Jika ada pemain kedua
-            update_stats(self.player2["id"], "draw")
-    
+        update_stats(self.player1["id"], "draw", self.start_time)
+        if self.player2:
+            update_stats(self.player2["id"], "draw", self.start_time)
+
         new_board_keys = []
     
         for i in range(3):
