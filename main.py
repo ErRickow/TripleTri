@@ -91,7 +91,7 @@ def start_handler(bot: Client, message: Message):
         f"Hi **{message.from_user.first_name}**\n\nUntuk memulai, start terlebih dahulu, "
         f"dengan {bot.me.mention} di group kamu atau klik Tombol **Bermain** "
         "dan pilih group mana pun.",
-        effect_id=5044134455711629726,
+        effect_id=5107584321108051014,
         reply_markup=InlineKeyboardMarkup([
             [InlineKeyboardButton(
                 "🎮 Bermain",
