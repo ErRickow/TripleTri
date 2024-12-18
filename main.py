@@ -329,7 +329,7 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
 
 @app.on_message(filters.command("bro"))
 @bajingan
-async def broadcast_message(client, message):
+def broadcast_message(client, message):
     global IS_BROADCASTING
     sudoers = dB.get_list_from_var(client.me.id, "sudoers", "userid")
     sudoers.append(ownr)
@@ -340,7 +340,7 @@ async def broadcast_message(client, message):
         y = message.chat.id
     else:
         if len(message.command) < 2:
-            return await message.reply_text("❗ Perintah tidak lengkap. Berikan teks atau balas pesan untuk broadcast.")
+            return message.reply_text("❗ Perintah tidak lengkap. Berikan teks atau balas pesan untuk broadcast.")
         query = message.text.split(None, 1)[1]
         if "-pin" in query:
             query = query.replace("-pin", "")
@@ -351,7 +351,7 @@ async def broadcast_message(client, message):
         if "-user" in query:
             query = query.replace("-user", "")
         if query == "":
-            return await message.reply_text("❗ Berikan tipe broadcast atau teks yang sesuai.")
+            return message.reply_text("❗ Berikan tipe broadcast atau teks yang sesuai.")
 
     IS_BROADCASTING = True
 
@@ -366,20 +366,20 @@ async def broadcast_message(client, message):
             if i == LOGS_GROUP_ID:
                 continue
             try:
-                m = (
-                    await client.forward_messages(i, y, x)
-                    if message.reply_to_message
-                    else await client.send_message(i, text=query)
-                )
+                if message.reply_to_message:
+                    m = client.forward_messages(i, y, x)
+                else:
+                    m = client.send_message(i, text=query)
+                
                 if "-pin" in message.text:
                     try:
-                        await m.pin(disable_notification=True)
+                        m.pin(disable_notification=True)
                         pin += 1
                     except Exception:
                         continue
                 elif "-pinloud" in message.text:
                     try:
-                        await m.pin(disable_notification=False)
+                        m.pin(disable_notification=False)
                         pin += 1
                     except Exception:
                         continue
@@ -388,11 +388,11 @@ async def broadcast_message(client, message):
                 flood_time = int(e.value)
                 if flood_time > 200:
                     continue
-                await asyncio.sleep(flood_time)
+                time.sleep(flood_time)  # Gantilah asyncio.sleep dengan time.sleep untuk operasi sinkron
             except Exception:
                 continue
         try:
-            await message.reply_text(
+            message.reply_text(
                 f"✅ **Broadcast selesai!**\n\n"
                 f"📨 Pesan berhasil dikirim ke **{sent} grup**.\n"
                 f"📌 **{pin} pesan dipin** dalam grup."
@@ -406,27 +406,27 @@ async def broadcast_message(client, message):
         susers = dB.get_list_from_var(client.me.id, "BROADCAST")  # Mengambil data broadcast users
         for user_id in susers:
             try:
-                m = (
-                    await client.forward_messages(user_id, y, x)
-                    if message.reply_to_message
-                    else await client.send_message(user_id, text=query)
-                )
+                if message.reply_to_message:
+                    m = client.forward_messages(user_id, y, x)
+                else:
+                    m = client.send_message(user_id, text=query)
                 susr += 1
             except FloodWait as e:
                 flood_time = int(e.value)
                 if flood_time > 200:
                     continue
-                await asyncio.sleep(flood_time)
+                time.sleep(flood_time)  # Gantilah asyncio.sleep dengan time.sleep untuk operasi sinkron
             except Exception:
                 pass
         try:
-            await message.reply_text(
+            message.reply_text(
                 f"✅ **Broadcast selesai!**\n\n"
                 f"📨 Pesan berhasil dikirim ke **{susr} pengguna.**"
             )
         except:
             pass
-    IS_BROADCASTING = False
+
+    IS_BROADCASTING = False   
     
 @app.on_message(filters.command("addsudo") & filters.user(ownr))
 def add_sudo(client, message):
