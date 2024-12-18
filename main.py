@@ -37,10 +37,7 @@ CONTACT_KEYS = InlineKeyboardMarkup([
     [
         InlineKeyboardButton(
             mail + " Email",
-            json.dumps({
-                "type": "C",
-                "action": "email"
-            })
+            callback_data="C_mail"
         )
     ]
 ])
