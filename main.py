@@ -74,7 +74,7 @@ def must_join_channel(app: Client, msg: Message):
                     app.send_message(
                         msg.chat.id,
                         f"Silakan bergabung dengan channel kami untuk mendukung pengembang bot ini. Setelah bergabung, kamu dapat melanjutkan penggunaan bot ini dengan mengetik /start kembali",
-                        effect_id=5087137729863484424,
+                        effect_id=5107584321108051014,
                         reply_markup=InlineKeyboardMarkup(
                             [
                                 [
@@ -97,12 +97,11 @@ def start_handler(bot: Client, message: Message):
         dB.add_to_var(bot.me.id, "BROADCAST", message.from_user.id)
     bot.send_message(
         message.chat.id,
-        "<blockquote>"
-        f"Hi **{message.from_user.first_name}**\n\nUntuk memulai, kamu bisa langsung menggunakan fitur ini tanpa perlu menambahkan {bot.me.mention} ke grup. "
-        "Yang penting, grup yang kamu pilih tidak dalam kondisi terbatas (restricted) dan memungkinkan penggunaan fitur ini. "
-        "Klik Tombol **Bermain** dan pilih grup mana pun yang kamu inginkan untuk memulai."
-        "</blockquote>",
-        effect_id=5159385139981059251,
+        "<blockquote>Hi **{message.from_user.first_name}**,</blockquote>\n\n"
+        "<blockquote>Untuk memulai, kamu bisa langsung menggunakan fitur ini tanpa perlu menambahkan {bot.me.mention} ke grup.</blockquote>\n\n"
+        "<blockquote>Yang penting, grup yang kamu pilih **tidak dalam kondisi terbatas (restricted)** dan memungkinkan penggunaan fitur ini.</blockquote>\n\n"
+        "<blockquote>Klik tombol **Bermain** dan pilih grup mana pun yang kamu inginkan untuk memulai.</blockquote>",
+        effect_id=5046509860389126442,
         reply_markup=InlineKeyboardMarkup([
             [InlineKeyboardButton(
                 "🎮 Bermain",
@@ -138,7 +137,8 @@ def contact_handler(bot: Client, message: Message):
         dB.add_to_var(bot.me.id, "BROADCAST", message.from_user.id)
     bot.send_message(
         message.chat.id,
-        "Kamu bisa mengirimkan saran atau masukan langsung kepada pemilik bot ini di sini",
+        "**Kamu bisa mengirimkan saran atau masukan langsung kepada pemilik bot ini di sini**",
+        effect_id=5159385139981059251,
         reply_to_message_id=message.id,
         reply_markup=InlineKeyboardMarkup([
             [InlineKeyboardButton("Contact Owner", url="https://t.me/chakszzz")],
