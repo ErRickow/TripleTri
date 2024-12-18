@@ -1,6 +1,6 @@
 import traceback
 from functools import wraps
-from main import LOGS_GROUP_ID
+from config import LOGS_GROUP_ID
 
 def bajingan(func):
     """Decorator untuk menangkap error dan mengirim log ke LOG_GROUP_ID."""
