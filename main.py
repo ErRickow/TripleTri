@@ -45,44 +45,44 @@ CONTACT_KEYS = InlineKeyboardMarkup([
     ]
 ])
 
-@app.on_message(filters.incoming & filters.private, group=-1)
-@bajingan
-def must_join_channel(app: Client, msg: Message):
-    if not MUST_JOIN:
-        return
-    try:
-        for channel in MUST_JOIN:
-            try:
-                app.get_chat_member(channel, msg.from_user.id)
-            except UserNotParticipant:
-                app.send_message(
-                    LOGS_GROUP_ID,
-                    f"Bang {msg.from_user.mention} gabung dahulu ke {channel}."
-                )
-                if channel.isalpha():
-                    link = "https://t.me/" + channel
-                else:
-                    chat_info = app.get_chat(channel)
-                    link = chat_info.invite_link
-                try:
-                    app.send_message(
-                        msg.chat.id,
-                        f"Untuk menggunakan bot ini, kamu harus bergabung dulu ke channel kami [di sini]({link}). Setelah bergabung, silakan ketik /start kembali.",
-                        effect_id=5107584321108051014,
-                        reply_markup=InlineKeyboardMarkup(
-                            [
-                                [
-                                    InlineKeyboardButton("🔗 GABUNG SEKARANG", url=link),
-                                ]
-                            ]
-                        )
-                    )
-                    msg.stop_propagation()
-                except ChatWriteForbidden:
-                    pass
-    except ChatAdminRequired:
-        app.send_message(LOGS_GROUP_ID, f"Bot perlu diangkat sebagai admin di grup/channel yang diminta: {MUST_JOIN} !")
-
+# @app.on_message(filters.incoming & filters.private, group=-1)
+# @bajingan
+# def must_join_channel(app: Client, msg: Message):
+#     if not MUST_JOIN:
+#         return
+#     try:
+#         for channel in MUST_JOIN:
+#             try:
+#                 app.get_chat_member(channel, msg.from_user.id)
+#             except UserNotParticipant:
+#                 app.send_message(
+#                     LOGS_GROUP_ID,
+#                     f"Bang {msg.from_user.mention} gabung dahulu ke {channel}."
+#                 )
+#                 if channel.isalpha():
+#                     link = "https://t.me/" + channel
+#                 else:
+#                     chat_info = app.get_chat(channel)
+#                     link = chat_info.invite_link
+#                 try:
+#                     app.send_message(
+#                         msg.chat.id,
+#                         f"Untuk menggunakan bot ini, kamu harus bergabung dulu ke channel kami [di sini]({link}). Setelah bergabung, silakan ketik /start kembali.",
+#                         effect_id=5107584321108051014,
+#                         reply_markup=InlineKeyboardMarkup(
+#                             [
+#                                 [
+#                                     InlineKeyboardButton("🔗 GABUNG SEKARANG", url=link),
+#                                 ]
+#                             ]
+#                         )
+#                     )
+#                     msg.stop_propagation()
+#                 except ChatWriteForbidden:
+#                     pass
+#     except ChatAdminRequired:
+#         app.send_message(LOGS_GROUP_ID, f"Bot perlu diangkat sebagai admin di grup/channel yang diminta: {MUST_JOIN} !")
+# 
 @app.on_message(filters.command("start"))
 @bajingan
 def start_handler(bot: Client, message: Message):
@@ -133,16 +133,15 @@ def stats_handler(bot: Client, message: Message):
 
     bot.send_message(message.chat.id, response, reply_markup=CONTACT_KEYS)
 
-
 @app.on_inline_query()
 def inline_query_handler(_, query: InlineQuery):
     query.answer(
         results=[InlineQueryResultArticle(
             title="Tic-Tac-Toe",
             input_message_content=InputTextMessageContent(
-                f"**{query.from_user.first_name}** Menantang Kamu!"
+                f"**{query.from_user.first_name}** menantang untuk bermain!"
             ),
-            description="Tap here to challenge your friends in XO!",
+            description="Pencet Disini Untuk Menantang Temanmu!",
             thumb_url="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Tic_tac_toe.svg/1200px-Tic_tac_toe"
                       ".svg.png",
             reply_markup=InlineKeyboardMarkup(
@@ -169,7 +168,7 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
         if game.player1["id"] == query.from_user.id:
             bot.answer_callback_query(
                 query.id,
-                "Wait for opponent!",
+                "Tunggu Sebentar!",
                 show_alert=True
             )
         elif game.player1["id"] != query.from_user.id:
@@ -198,7 +197,7 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
         if data["end"]:
             bot.answer_callback_query(
                 query.id,
-                "Match has ended!",
+                "Game Berakhir!",
                 show_alert=True
             )
 
@@ -208,7 +207,7 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
                 or (not game.whose_turn and query.from_user.id != game.player2["id"]):
             bot.answer_callback_query(
                 query.id,
-                "Not your turn!"
+                "Bukan Giliranmu!"
             )
 
             return
@@ -256,7 +255,7 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
         else:
             bot.answer_callback_query(
                 query.id,
-                "This one is already taken!"
+                "Ini bukan room kamu!"
             )
     elif data["type"] == "R":  # Reset
         game = reset_game(game)
@@ -282,10 +281,10 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
             bot.edit_message_text(
                 query.from_user.id,
                 query.message.message_id,
-                "reza.farjam78@gmail.com",
+                "ryppain@gmail.com",
                 reply_markup=InlineKeyboardMarkup(
                     [[InlineKeyboardButton(
-                        back + " Back",
+                        back + " Kembali",
                         json.dumps(
                             {"type": "C",
                              "action": "email-back"
