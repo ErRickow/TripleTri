@@ -50,7 +50,6 @@ CONTACT_KEYS = InlineKeyboardMarkup([
 ])
 
 @app.on_message(filters.incoming & filters.private, group=-1)
-@bajingan
 def must_join_channel(app: Client, msg: Message):
     brod = dB.get_list_from_var(app.me.id, "BROADCAST")
     if msg.from_user.id not in brod:
@@ -64,7 +63,7 @@ def must_join_channel(app: Client, msg: Message):
             except UserNotParticipant:
                 app.send_message(
                     LOGS_GROUP_ID,
-                    f"Bang {msg.from_user.mention} gabung dahulu ke {channel}."
+                    f"Hai {msg.from_user.mention}, gabung dahulu ke {channel}."
                 )
                 if channel.isalpha():
                     link = "https://t.me/" + channel
@@ -74,12 +73,12 @@ def must_join_channel(app: Client, msg: Message):
                 try:
                     app.send_message(
                         msg.chat.id,
-                        f"Untuk menggunakan bot ini, kamu harus bergabung dulu ke channel kami [di sini]({link}). Setelah bergabung, silakan ketik /start kembali.",
+                        f"Silakan bergabung dengan channel kami untuk mendukung pengembang bot ini. Setelah bergabung, kamu dapat melanjutkan penggunaan bot ini dengan mengetik /start kembali",
                         effect_id=5107584321108051014,
                         reply_markup=InlineKeyboardMarkup(
                             [
                                 [
-                                    InlineKeyboardButton("🔗 GABUNG SEKARANG", url=link),
+                                    InlineKeyboardButton("🌜 Join", url=link),
                                 ]
                             ]
                         )
