@@ -7,7 +7,7 @@ from Tic.util import dB
 from Tic.erornya import bajingan
 from dotenv import load_dotenv
 from pyrogram import Client, filters
-from pyrogram.errors import UserNotParticipant, ChatAdminRequired
+from pyrogram.errors import ChatAdminRequired, UserNotParticipant, ChatWriteForbidden
 from pyrogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessageContent, \
     InlineKeyboardMarkup, CallbackQuery, Message, InlineKeyboardButton
 
