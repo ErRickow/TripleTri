@@ -93,6 +93,19 @@ def must_join_channel(app: Client, msg: Message):
 @bajingan
 def start_handler(bot: Client, message: Message):
     brod = dB.get_list_from_var(app.me.id, "BROADCAST")
+    blus = dB.get_list_from_var(app.me.id, "BLUSER")
+    org = msg.from_user
+    if int(org.id) in flood3:
+        flood3[int(org.id)] += 1
+    else:
+        flood3[int(org.id)] = 1
+    if flood3[int(org.id)] > 5:
+        del flood3[int(org.id)]
+        if org.id not in blus:
+            dB.add_to_var(app.me.id, "BLUSER", org.id)
+        return await msg.reply_text(
+            f"<blockquote>**📛 TERDETEKSI SPAMMING**\n\nAuto Blocked {org.first_name} Done✅\nKunjungi Support Group jika ini sebuah kesalahan</blockquote>"
+        )
     if message.from_user.id not in brod:
         dB.add_to_var(bot.me.id, "BROADCAST", message.from_user.id)
     bot.send_message(
