@@ -1,7 +1,5 @@
 import os
 
-from html import escape
-from re import sub
 from Tic.data import *
 from config import LOGS_GROUP_ID, MUST_JOIN
 from Tic.emoji import *
@@ -22,22 +20,11 @@ app = Client("er",
              )
 
 
-# async def escape_markdown(text: str) -> str:
-#     """Escape markdown data."""
-#     escape_chars = r"\*_`\["
-#     return sub(r"([%s])" % escape_chars, r"\\\1", text)
-
-
-async def mention(name: str, user_id: int) -> str:
-    """Mention user in html format."""
-    name = escape(name)
-    return f'<a href="tg://user?id={user_id}">{name}</a>'
-
-
-# async def mention(name: str, user_id: int) -> str:
-#     """Mention user in markdown format."""
-#     return f"[{(await escape_markdown(name))}](tg://user?id={user_id})"
-
+def mention(name: str, id: int) -> str:
+    try:
+        return "[{}](tg://user?id={})".format(name, id)
+    except Exception as e:
+        return f"Error: {e}"
 
 CONTACT_KEYS = InlineKeyboardMarkup([
     [
@@ -154,7 +141,7 @@ def inline_query_handler(_, query: InlineQuery):
         results=[InlineQueryResultArticle(
             title="Tic-Tac-Toe",
             input_message_content=InputTextMessageContent(
-                f"**{query.from_user.first_name}** menantang untuk bermain!"
+                f"**{query.from_user.mention}** menantang untuk bermain!"
             ),
             description="Pencet Disini Untuk Menantang Temanmu!",
             thumb_url="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Tic_tac_toe.svg/1200px-Tic_tac_toe"
@@ -165,7 +152,7 @@ def inline_query_handler(_, query: InlineQuery):
                     json.dumps(
                         {"type": "P",
                          "id": query.from_user.id,
-                         "name": query.from_user.first_name
+                         "name": query.from_user.mention
                          }
                     )
                 )]]
