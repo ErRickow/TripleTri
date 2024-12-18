@@ -142,7 +142,7 @@ def inline_query_handler(_, query: InlineQuery):
         results=[InlineQueryResultArticle(
             title="Tic-Tac-Toe",
             input_message_content=InputTextMessageContent(
-                f"**Menantang untuk bermain!**"
+                f"**{namanya} Menantang untuk bermain!**"
             ),
             description="Pencet Disini Untuk Menantang Temanmu!",
             thumb_url="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Tic_tac_toe.svg/1200px-Tic_tac_toe"
@@ -177,7 +177,7 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
         elif game.player1["id"] != query.from_user.id:
             game.player2 = {"type": "P",
                             "id": query.from_user.id,
-                            "name": query.from_user.first_name
+                            "name": query.from_user.id
                             }
 
             message_text = "{}({})  {}  {}({})\n\n{} **{} ({})**".format(
