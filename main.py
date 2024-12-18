@@ -358,7 +358,7 @@ async def broadcast_message(client, message):
         chats = [int(chat["chat_id"]) for chat in dB.get_served_chats() or []]
 
         for chat_id in chats:
-            if chat_id == config.LOGS_GROUP_ID:
+            if chat_id == LOGS_GROUP_ID:
                 continue
             try:
                 msg = (
