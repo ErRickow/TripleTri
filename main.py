@@ -137,7 +137,7 @@ def stats_handler(bot: Client, message: Message):
 
 @app.on_inline_query()
 def inline_query_handler(_, query: InlineQuery):
-    namanya = query.from_user.first_name if query.from_user.first_name else query.from_user.username
+    namanya = InlineQuery.from_user.first_name if InlineQuery.from_user.first_name else InlineQuery.from_user.username
     query.answer(
         results=[InlineQueryResultArticle(
             title="Tic-Tac-Toe",
