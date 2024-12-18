@@ -89,6 +89,9 @@ def must_join_channel(app: Client, msg: Message):
 @app.on_message(filters.command("start") & filters.private)
 @bajingan
 def start_handler(bot: Client, message: Message):
+    brod = dB.get_list_from_var(bot_id, "BROADCAST")
+    if message.from_user.id not in brod:
+        dB.add_to_var(client.me.id, "BROADCAST", message.from_user.id)
     bot.send_message(
         message.chat.id,
         f"Hi **{message.from_user.first_name}**\n\nUntuk memulai, start terlebih dahulu, "
@@ -102,9 +105,12 @@ def start_handler(bot: Client, message: Message):
         ])
     )
 
-@app.on_message(filters.command("contact"))
+@app.on_message(filters.command("contact") & filters.private)
 @bajingan
 def contact_handler(bot: Client, message: Message):
+    brod = dB.get_list_from_var(bot_id, "BROADCAST")
+    if message.from_user.id not in brod:
+        dB.add_to_var(client.me.id, "BROADCAST", message.from_user.id)
     bot.send_message(
         message.chat.id,
         "Bebas saran ke owner.",
@@ -115,11 +121,12 @@ def contact_handler(bot: Client, message: Message):
         ])
     )
 
-@app.on_message(filters.command("stats"))
+@app.on_message(filters.command("stats") filters.group)
 @bajingan
 def stats_handler(bot: Client, message: Message):
     user_id = message.from_user.id
     stats = dB.get_user_stats(user_id)
+    
 
     hours, remainder = divmod(stats["total_play_time"], 3600)
     minutes, seconds = divmod(remainder, 60)
