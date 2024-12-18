@@ -162,7 +162,7 @@ def inline_query_handler(_, query: InlineQuery):
                     json.dumps(
                         {"type": "P",
                          "id": query.from_user.id,
-                         "name": namaLo
+                         "name": query.from_user.username
                          }
                     )
                 )]]
