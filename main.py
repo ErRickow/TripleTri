@@ -94,7 +94,7 @@ def must_join_channel(app: Client, msg: Message):
 def start_handler(bot: Client, message: Message):
     brod = dB.get_list_from_var(app.me.id, "BROADCAST")
     blus = dB.get_list_from_var(app.me.id, "BLUSER")
-    org = msg.from_user
+    org = message.from_user
     if int(org.id) in flood3:
         flood3[int(org.id)] += 1
     else:
@@ -111,7 +111,7 @@ def start_handler(bot: Client, message: Message):
     bot.send_message(
         message.chat.id,
         f"<blockquote>Hi **{org.first_name}**,</blockquote>\n"
-        "<blockquote>Untuk memulai, kamu bisa langsung menggunakan fitur ini tanpa perlu menambahkan {bot.me.mention} ke grup.</blockquote>"
+        f"<blockquote>Untuk memulai, kamu bisa langsung menggunakan fitur ini tanpa perlu menambahkan {bot.me.mention} ke grup.</blockquote>"
         "<blockquote>Yang penting, grup yang kamu pilih **tidak dalam kondisi terbatas (restricted)** dan memungkinkan penggunaan fitur ini.</blockquote>"
         "<blockquote>Klik tombol **Bermain** dan pilih grup mana pun yang kamu inginkan untuk memulai.</blockquote>",
         effect_id=5046509860389126442,
