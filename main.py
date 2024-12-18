@@ -2,7 +2,7 @@ import os
 
 from Tic.data import *
 from Tic.emoji import *
-from .util import dB
+from Tic.util import dB
 from dotenv import load_dotenv
 from pyrogram import Client, filters
 from pyrogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessageContent, \
