@@ -144,12 +144,7 @@ def inline_query_handler(_, query: InlineQuery):
             reply_markup=InlineKeyboardMarkup(
                 [[InlineKeyboardButton(
                     swords + " Accept",
-                    json.dumps(
-                        {"type": "P",
-                         "id": query.from_user.id,
-                         "name": query.from_user.first_name
-                         }
-                    )
+                    callback_data=f"P_{query.from_user.id}"  # Encode data minimal
                 )]]
             )
         )],
