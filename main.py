@@ -103,7 +103,7 @@ def start_handler(bot: Client, message: Message):
         del flood3[int(org.id)]
         if org.id not in blus:
             dB.add_to_var(app.me.id, "BLUSER", org.id)
-        return await msg.reply_text(
+        return message.reply_text(
             f"<blockquote>**📛 TERDETEKSI SPAMMING**\n\nAuto Blocked {org.first_name} Done✅\nKunjungi Support Group jika ini sebuah kesalahan</blockquote>"
         )
     if message.from_user.id not in brod:
