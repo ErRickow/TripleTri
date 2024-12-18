@@ -21,7 +21,7 @@ app = Client("er",
 
 
 def mention(name: str, id: int) -> str:
-    return "[{}](tg://user?id={})".format(name, id)
+    return f"[{name}](tg://user?id={id})"
 
 CONTACT_KEYS = InlineKeyboardMarkup([
     [
