@@ -1,7 +1,6 @@
 import os
 
 from Tic.data import *
-from Tic.util import load_stats
 from Tic.emoji import *
 from dotenv import load_dotenv
 from pyrogram import Client, filters
@@ -19,10 +18,6 @@ app = Client("er",
 
 def mention(name: str, id: int) -> str:
     return "[{}](tg://user?id={})".format(name, id)
-
-def get_user_stats(user_id):
-    stats = load_stats()
-    return stats.get(user_id, {"games_played": 0, "games_won": 0, "games_draw": 0})
 
 CONTACT_KEYS = InlineKeyboardMarkup([
     [
