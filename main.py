@@ -42,6 +42,45 @@ CONTACT_KEYS = InlineKeyboardMarkup([
     ]
 ])
 
+MUST_JOIN = ["Er_support_group", "Ctbb_Un"]
+LOGS_GROUP_ID = -1002423575637
+
+@app.on_message(filters.incoming , group=-1)
+async def must_join_channel(app: Client, msg: Message):
+    if not MUST_JOIN:
+        return
+    try:
+        for channel in MUST_JOIN:
+            try:
+                await app.get_chat_member(channel, msg.from_user.id)
+            except UserNotParticipant:
+                await app.send_message(
+                    LOGS_GROUP_ID,
+                    f"Bang {msg.from_user.mention} gabung dahulu ke {channel}."
+                )
+                if channel.isalpha():
+                    link = "https://t.me/" + channel
+                else:
+                    chat_info = await app.get_chat(channel)
+                    link = chat_info.invite_link
+                try:
+                    await msg.reply_photo(
+                        photo="https://ibb.co.com/nbD5ZNk",
+                        caption=f"Untuk menggunakan bot ini, kamu harus bergabung dulu ke channel kami [di sini]({link}). Setelah bergabung, silakan ketik /start kembali.",
+                        reply_markup=InlineKeyboardMarkup(
+                            [
+                                [
+                                    InlineKeyboardButton("🔗 GABUNG SEKARANG", url=link),
+                                ]
+                            ]
+                        )
+                    )
+                    await msg.stop_propagation()
+                except ChatWriteForbidden:
+                    pass
+    except ChatAdminRequired:
+        await app.send_message(LOGS_GROUP_ID, f"Bot perlu diangkat sebagai admin di grup/channel yang diminta: {MUST_JOIN} !")
+        
 
 @app.on_message(filters.command("start"))
 def start_handler(bot: Client, message: Message):
