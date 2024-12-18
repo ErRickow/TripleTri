@@ -20,6 +20,7 @@ app = Client("er",
              )
 
 IS_BROADCASTING = False
+flood3 = {}
 
 def mention(name: str, id: int) -> str:
     try:
