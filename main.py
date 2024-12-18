@@ -128,14 +128,17 @@ def stats_handler(bot: Client, message: Message):
     user_id = message.from_user.id
     stats = dB.get_user_stats(user_id)
     chatid = message.chat.id
-    chatnya = dB.is_served_chat(chatid)
-    if chatid not in chatnya:
-        dB.add_served_chat(chatid)
 
+    # Pengecekan apakah chat ID sudah masuk ke database
+    if not dB.is_served_chat(chatid):  # Jika chat ID belum ada
+        dB.add_served_chat(chatid)  # Tambahkan chat ID ke database
+
+    # Format waktu bermain
     hours, remainder = divmod(stats["total_play_time"], 3600)
     minutes, seconds = divmod(remainder, 60)
     formatted_time = f"{hours}h {minutes}m {seconds}s"
 
+    # Pesan respons statistik
     response = (
         f"📊 **Statistik {message.from_user.first_name}**:\n\n"
         f"🎮 Total Permainan: {stats['games_played']}\n"
