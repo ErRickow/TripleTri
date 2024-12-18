@@ -2,7 +2,7 @@ import traceback
 from functools import wraps
 from main import LOGS_GROUP_ID, app
 
-def capture_err_simple(func):
+def bajingan(func):
     """Decorator untuk menangkap error dan mengirim log ke LOG_GROUP_ID."""
     @wraps(func)
     async def wrapper(app, message, *args, **kwargs):
