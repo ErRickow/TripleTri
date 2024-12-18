@@ -5,7 +5,7 @@ from config import LOGS_GROUP_ID
 def bajingan(func):
     """Decorator untuk menangkap error dan mengirim log ke LOG_GROUP_ID."""
     @wraps(func)
-    async def wrapper(client, message, *args, **kwargs):
+    def wrapper(client, message, *args, **kwargs):
         try:
             return func(client, message, *args, **kwargs)
         except Exception as err:
@@ -16,6 +16,6 @@ def bajingan(func):
                 f"💬 Command: `{message.text or message.caption}`\n"
                 f"⚠️ Error: `{str(err)}`"
             )
-            await client.send_message(LOGS_GROUP_ID, error_message)
+            client.send_message(LOGS_GROUP_ID, error_message)  # Removed async/await
             raise err
     return wrapper
