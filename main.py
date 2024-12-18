@@ -100,17 +100,17 @@ def start_handler(bot: Client, message: Message):
         ])
     )
 
-# @app.on_message(filters.command("contact"))
-# @bajingan
-# def contact_handler(bot: Client, message: Message):
-#     bot.send_message(
-#         message.chat.id,
-#         "Bebas saran ke owner.",
-#         reply_markup=InlineKeyboardMarkup([
-#             [InlineKeyboardButton("Hubungi owner", url="https://t.me/chakszzz")],
-#             [InlineKeyboardButton("Admin Side", url="https://t.me/Adl0878")]
-#         ])
-#     )
+@app.on_message(filters.command("contact"))
+@bajingan
+def contact_handler(bot: Client, message: Message):
+    bot.send_message(
+        message.chat.id,
+        "Bebas saran ke owner.",
+        reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton("Hubungi owner", url="https://t.me/chakszzz")],
+            [InlineKeyboardButton("Admin Side", url="https://t.me/Adl0878")]
+        ])
+    )
 
 @app.on_message(filters.command("stats"))
 @bajingan
