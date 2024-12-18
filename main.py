@@ -26,6 +26,14 @@ def mention(name: str, id: int) -> str:
     except Exception as e:
         return f"Error: {e}"
 
+def mention2(id: int) -> str:
+    try:
+        user = app.get_users(id)
+        return "[{}](tg://user?id={})".format(user.first_name, id)
+    except Exception as e:
+        return f"Error: {e}"
+
+
 CONTACT_KEYS = InlineKeyboardMarkup([
     [
         InlineKeyboardButton(
@@ -220,7 +228,7 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
 
             if game.check_winner():
                 message_text = "{}({})  {}  {}({})\n\n{} **{} won!**".format(
-                    mention(game.player1["name"], game.player1["id"]),
+                    mention2(game.player1["name"], game.player1["id"]),
                     X,
                     vs,
                     mention(game.player2["name"], game.player2["id"]),
@@ -230,7 +238,7 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
                 )
             elif game.is_draw():
                 message_text = "{}({})  {}  {}({})\n\n{} **Draw!**".format(
-                    mention(game.player1["name"], game.player1["id"]),
+                    mention2(game.player1["name"], game.player1["id"]),
                     X,
                     vs,
                     mention(game.player2["name"], game.player2["id"]),
@@ -239,13 +247,13 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
                 )
             else:
                 message_text = "{}({})  {}  {}({})\n\n{} **{} ({})**".format(
-                    mention(game.player1["name"], game.player1["id"]),
+                    mention2(game.player1["name"], game.player1["id"]),
                     X,
                     vs,
                     mention(game.player2["name"], game.player2["id"]),
                     O,
                     game,
-                    mention(game.player1["name"], game.player1["id"]) if game.whose_turn else
+                    mention2(game.player1["name"], game.player1["id"]) if game.whose_turn else
                     mention(game.player2["name"], game.player2["id"]),
                     X if game.whose_turn else O
                 )
@@ -264,13 +272,13 @@ def callback_query_handler(bot: Client, query: CallbackQuery):
         game = reset_game(game)
 
         message_text = "{}({})  {}  {}({})\n\n{} **{} ({})**".format(
-            mention(game.player1["name"], game.player1["id"]),
+            mention2(game.player1["name"], game.player1["id"]),
             X,
             vs,
             mention(game.player2["name"], game.player2["id"]),
             O,
             game,
-            mention(game.player1["name"], game.player1["id"]),
+            mention2(game.player1["name"], game.player1["id"]),
             X
         )
 
